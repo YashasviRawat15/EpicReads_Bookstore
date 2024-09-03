@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Rating_must_be_between_1_and_5</fullName>
+    <active>true</active>
+    <errorConditionFormula>OR( Rating__c &lt;1,  Rating__c &gt;5 )</errorConditionFormula>
+    <errorDisplayField>Rating__c</errorDisplayField>
+    <errorMessage>Rating should lie between 1 and 5.</errorMessage>
+</ValidationRule>

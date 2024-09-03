@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sub_Category__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Sub Category</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Book_Category__c.Parent_Category__c</field>
+            <operation>equals</operation>
+            <valueField>$Source.Category__c</valueField>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Book_Category__c</referenceTo>
+    <relationshipLabel>Books (Sub Category)</relationshipLabel>
+    <relationshipName>Books1</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Parent_Category__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Parent Category</label>
+    <referenceTo>Book_Category__c</referenceTo>
+    <relationshipLabel>Book Categories</relationshipLabel>
+    <relationshipName>Book_Categories</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

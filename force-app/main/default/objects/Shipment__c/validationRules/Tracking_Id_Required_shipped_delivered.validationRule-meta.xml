@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tracking_Id_Required_shipped_delivered</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( ISBLANK( Tracking_ID__c ), OR( ISPICKVAL( Shipment_Status__c , &apos;Shipped&apos;),  ISPICKVAL( Shipment_Status__c , &apos;Delivered&apos;)))</errorConditionFormula>
+    <errorDisplayField>Tracking_ID__c</errorDisplayField>
+    <errorMessage>Tracking ID id required if the order is shipped or delivered.</errorMessage>
+</ValidationRule>

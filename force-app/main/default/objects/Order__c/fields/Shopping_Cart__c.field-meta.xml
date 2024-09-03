@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Shopping_Cart__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <label>Shopping Cart</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Shopping_Cart__c.Contact__c</field>
+            <operation>equals</operation>
+            <valueField>$Source.Contact__c</valueField>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Shopping_Cart__c</referenceTo>
+    <relationshipLabel>OrdersC</relationshipLabel>
+    <relationshipName>OrdersC</relationshipName>
+    <required>true</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>
