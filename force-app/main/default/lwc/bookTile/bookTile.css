@@ -1,0 +1,63 @@
+.book-tile {
+    padding: 1rem;
+    border: 1px solid #ddd;
+    margin: 1rem;
+    font-size: larger;
+}
+
+.heartIcon {
+    position: absolute;
+    bottom: 0.1rem;
+    right: 0;
+}
+
+.book-image {
+    margin-bottom: 0.8rem;
+    margin-left: 0.9rem;
+    width: 14rem;
+    height: 21rem;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.book-title {
+    font-weight: bold;
+}
+
+.book-price {
+    color: green;
+}
+
+/* Quantity Control Styles */
+.quantity-control {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.4rem;
+}
+
+.quantity-buttons {
+
+    display: flex;
+    align-items: center;
+}
+
+.quantity-value {
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+.quantity-label{
+    margin-right: 6rem;
+}
+
+/* Star Rating Styles */
+.rating {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.4rem;
+}
+
+.yellow-star {
+    --slds-c-icon-color-foreground-default: gold;
+
+}

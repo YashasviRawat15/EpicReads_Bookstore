@@ -1,0 +1,32 @@
+<template>
+    <lightning-card>
+        <template if:true={books}>
+            <div class="slds-grid slds-wrap">
+                <template for:each={books} for:item="book">
+                    <div key={book.book.Id} class="slds-col slds-size_1-of-5 slds-p-around_x-small">
+                        <c-book-tile
+                            book-id={book.book.Id}
+                            book-name={book.book.Name}
+                            book-image-url={book.imageUrl}
+                            price={book.book.Price__c}
+                            avg-rating={book.book.Average_Rating__c}
+                            review-count={book.book.No_of_Reviews__c}
+                            onbookselect={handleBookSelect}
+                            onaddtocart={handleAddToCart}
+                            onaddtowishlist={handleAddToWishlist}>
+                        </c-book-tile>
+                    </div>
+                </template>
+            </div>
+        </template>
+        <template if:true={error}>
+            <p>{error}</p>
+        </template>
+        <template if:true={isBookDetailVisible}>
+            <c-book-detail 
+                record-id={selectedBookId} 
+                onbacktolist={handleBackToList}>
+            </c-book-detail>
+        </template>
+    </lightning-card>
+</template>

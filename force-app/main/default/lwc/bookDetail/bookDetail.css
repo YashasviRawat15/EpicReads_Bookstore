@@ -1,0 +1,33 @@
+.book-details{
+    padding:3rem;
+}
+
+img{
+    height: 33rem;
+    width: 22rem;
+    border: 1px black;
+    margin-right: 5rem;
+    margin-top: 0.3rem;
+}
+
+.book-info{
+    margin-left: 5rem;
+    font-size: large;
+    width: 70%;
+    position: absolute;
+    right: 3rem;
+}
+
+.book-info p {
+    margin-bottom: 0.5rem;
+}
+
+.heading{
+    font-size: xx-large;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+.cart-button{
+    margin-right: 1.5rem;
+}

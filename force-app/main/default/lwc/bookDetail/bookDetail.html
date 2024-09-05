@@ -1,0 +1,35 @@
+<template>
+    <lightning-card >
+        <div class="book-details">
+            <lightning-button-icon icon-name="utility:back" alternative-text="Back" onclick={handleBackToList} class="slds-m-bottom_small"></lightning-button-icon>
+    <template if:true={book}>
+        
+        <lightning-layout>
+            <lightning-layout-item class="book-img">
+                
+                <img src={book.imageUrl} alt="Book Image" />
+            
+            </lightning-layout-item>
+                <lightning-layout-item>
+            <div class="book-info">
+                <h1 class="heading">{book.Name}</h1>
+                <p><strong>Author:</strong> {book.Author__c}</p>
+                <p><strong>Publisher:</strong> {book.Publisher__c}</p>
+                <p><strong>Price:</strong> ₹{book.Price__c}</p>
+                <p><strong>Average Rating:</strong> {book.Average_Rating__c} ({book.No_of_Reviews__c} Reviews)</p>
+                <p><strong>Genre:</strong> {book.Category__c}</p>
+                <p class="book-description"><strong>Description:</strong> {book.Description__c}</p>
+                <lightning-button label="Add to Cart" onclick={handleAddToCart} class="cart-button"></lightning-button>
+                <lightning-button label="Add to Wishlist" onclick={handleAddToWishlist}></lightning-button>
+            </div>
+            </lightning-layout-item>
+        </lightning-layout>
+    </template>
+    <template if:true={error}>
+        <p>{error}</p>
+    </template>
+
+</div>
+</lightning-card>
+</template>
+

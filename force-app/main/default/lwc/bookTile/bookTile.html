@@ -1,0 +1,40 @@
+<template>
+    <div class="book-tile" onclick={handleBookClick}>
+        <lightning-card>
+            <lightning-button-icon icon-name="utility:heart" alternative-text="Add to Wishlist" onclick={handleWishlist} class="heartIcon"></lightning-button-icon>
+            <img src={bookImageUrl} alt={bookName} class="book-image"/>
+            <p class="book-title">{bookName}</p>
+            <p class="book-price">₹{price}</p>
+
+            <div class="quantity-control">
+                <label class="quantity-label">Quantity</label>
+                <div class="quantity-buttons">
+                    <lightning-button-icon icon-name="utility:dash" alternative-text="Decrease" onclick={decreaseQuantity}></lightning-button-icon>
+                    <span class="quantity-value">{quantity}</span>
+                    <lightning-button-icon icon-name="utility:add" alternative-text="Increase" onclick={increaseQuantity}></lightning-button-icon>
+                </div>
+            </div>
+
+            <div class="rating">
+                <template if:true={star1}>
+                    <lightning-icon icon-name="utility:favorite" alternative-text="Rating" class="star-icon yellow-star"></lightning-icon>
+                </template>
+                <template if:true={star2}>
+                    <lightning-icon icon-name="utility:favorite" alternative-text="Rating" class="star-icon yellow-star"></lightning-icon>
+                </template>
+                <template if:true={star3}>
+                    <lightning-icon icon-name="utility:favorite" alternative-text="Rating" class="star-icon yellow-star"></lightning-icon>
+                </template>
+                <template if:true={star4}>
+                    <lightning-icon icon-name="utility:favorite" alternative-text="Rating" class="star-icon yellow-star"></lightning-icon>
+                </template>
+                <template if:true={star5}>
+                    <lightning-icon icon-name="utility:favorite" alternative-text="Rating" class="star-icon yellow-star"></lightning-icon>
+                </template>
+                <span> ({reviewCount} reviews)</span>
+            </div>
+
+            <lightning-button label="Add to Cart" onclick={handleAddToCart}></lightning-button>
+        </lightning-card>
+    </div>
+</template>
