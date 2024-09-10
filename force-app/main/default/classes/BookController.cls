@@ -12,7 +12,7 @@ public with sharing class BookController {
             // Get the ContentDocumentLink associated with the Book
             String imageUrl = getBookImage(book.Id);
             
-            bookWrappers.add(new BookWrapper(book, imageUrl));
+            bookWrappers.add(new BookWrapper(book, imageUrl,'Test', 'Test', 'Test', 'Test'));
         }
 
         return bookWrappers;
@@ -25,18 +25,25 @@ public static BookWrapper getBookDetails(Id bookId) {
         throw new AuraHandledException('Invalid book ID');
     }
     
-    Book__c book = [SELECT Id, Name, Description__c, Price__c, Average_Rating__c, No_of_Reviews__c, Publisher__r.Name, Author__r.Name, Category__r.Name FROM Book__c WHERE Id = :bookId LIMIT 1];
-    
+    Book__c book = [SELECT Id, Name, Description__c, Price__c, Average_Rating__c, No_of_Reviews__c, Publisher__c, Author__c, Category__c, Sub_Category__c FROM Book__c WHERE Id = :bookId LIMIT 1];
+    Author__c author = [SELECT Name from Author__c Where Id =:book.Author__c];
+    Publisher__c publisher = [SELECT Name FROM Publisher__c WHERE Id=:book.Publisher__c];
+    Book_Category__c category = [SELECT Name FROM Book_Category__c WHERE Id =:book.Category__c];
+    Book_Category__c subCategory = [SELECT Name FROM Book_Category__c WHERE Id =:book.Sub_Category__c];
+
+
+
+
     //String genreName = book.Category__r.Name;                
     String imageUrl = getBookImage(bookId);
 
-    return new BookWrapper(book, imageUrl);
+    return new BookWrapper(book, imageUrl, author.Name, Publisher.Name, category.Name, subCategory.Name);
 }
 
 
-    // Method to retrieve the image URL from ContentDocument
+   
     private static String getBookImage(Id bookId) {
-        // Query ContentDocumentLink for the related files
+       
         List<ContentDocumentLink> docLinks = [
             SELECT ContentDocumentId FROM ContentDocumentLink WHERE LinkedEntityId = :bookId LIMIT 1
         ];
@@ -51,23 +58,24 @@ public static BookWrapper getBookDetails(Id bookId) {
             ];
 
             if (!contentVersions.isEmpty()) {
-                return '/sfc/servlet.shepherd/version/download/' + contentVersions[0].Id;
+                return 'https://tmc-f6-dev-ed.develop.my.salesforce.com/sfc/servlet.shepherd/version/download/' + contentVersions[0].Id;
+                //return '/servlet/servlet.FileDownload?file={'+ contentVersions[0].Id +'}';
             }
         }
-        return null; // No image found
+        return null; 
     }
 
-    // Add to Cart logic (mock implementation)
+    // Add to Cart logic 
     @AuraEnabled
     public static String addToCart(Id bookId, Integer quantity) {
-        // Simulate adding to cart action
+        
         return 'Book with ID ' + bookId + ' has been added to the cart with quantity: ' + quantity;
     }
 
-    // Add to Wishlist logic (mock implementation)
+    // Add to Wishlist logic 
     @AuraEnabled
     public static String addToWishlist(Id bookId) {
-        // Simulate adding to wishlist action
+       
         return 'Book with ID ' + bookId + ' has been added to the wishlist';
     }
 
@@ -77,13 +85,23 @@ public static BookWrapper getBookDetails(Id bookId) {
         public Book__c book { get; set; }
         @AuraEnabled
         public String imageUrl { get; set; }
-       
+        @AuraEnabled
+        public String author { get; set; }
+        @AuraEnabled
+        public String publisher { get; set; }
+        @AuraEnabled
+        public String category { get; set; }
+        @AuraEnabled
+        public String subCategory { get; set; }
         
 
-        public BookWrapper(Book__c book, String imageUrl) {
+        public BookWrapper(Book__c book, String imageUrl, String author, String publisher, String category, String subCategory) {
             this.book = book;
             this.imageUrl = imageUrl;
-            
+            this.author =  author;
+            this.publisher = publisher;
+            this.category = category;
+            this.subCategory = subCategory;
         }
     }
 }

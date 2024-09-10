@@ -13,9 +13,9 @@
 
 .book-image {
     margin-bottom: 0.8rem;
-    margin-left: 0.9rem;
-    width: 14rem;
-    height: 21rem;
+    margin-left: 1rem;
+    width: 14.5rem;
+    height: 22rem;
     margin-top: 0;
     padding-top: 0;
 }
@@ -39,6 +39,8 @@
 
     display: flex;
     align-items: center;
+    position: absolute;
+    right: 0;
 }
 
 .quantity-value {

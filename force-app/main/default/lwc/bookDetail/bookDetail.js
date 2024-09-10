@@ -15,6 +15,10 @@ export default class BookDetail extends LightningElement {
                 ...data.book,
                 
                 imageUrl: data.imageUrl || '',
+                author: data.author,
+                publisher: data.publisher,
+                category: data.category,
+                subCategory: data.subCategory
                
                 
             };

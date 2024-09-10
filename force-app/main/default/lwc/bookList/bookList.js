@@ -8,6 +8,7 @@ export default class BookList extends LightningElement {
     @track books = [];
     @track selectedBookId; // Track the selected book ID
     @track showBookDetail = false;
+    @track detailTopPosition = '0px';
     error;
 
     @wire(getBooks)
@@ -23,8 +24,19 @@ export default class BookList extends LightningElement {
     }
 
     handleBookSelect(event) {
-        this.selectedBookId = event.detail.bookId; // Capture the selected book ID
-        this.showBookDetail = true; // Show the BookDetail component
+        // Capture the current book tile that was clicked
+        const bookTile = event.currentTarget; 
+        const rect = bookTile.getBoundingClientRect(); // Get the bounding box of the clicked tile
+        const scrollTop = window.scrollY; // Get the current scroll position (modern alternative)
+
+        // Calculate the actual top position of the bookDetail component
+        this.detailTopPosition = `${rect.top + scrollTop}px`; 
+
+        this.selectedBookId = event.detail.bookId;
+        this.showBookDetail = true;
+
+        // Apply sliding effect for the book detail
+        this.template.host.dataset.showBookDetail = true;
     }
 
     handleAddToCart(event) {
@@ -70,6 +82,7 @@ export default class BookList extends LightningElement {
     handleBackToList() {
         this.showBookDetail = false;
         this.selectedBookId = null;
+        this.template.host.dataset.showBookDetail = false;
     }
 
     get isBookListVisible() {
@@ -79,4 +92,5 @@ export default class BookList extends LightningElement {
     get isBookDetailVisible() {
         return this.showBookDetail;
     }
+
 }
