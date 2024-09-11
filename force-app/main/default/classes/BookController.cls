@@ -12,7 +12,7 @@ public with sharing class BookController {
             // Get the ContentDocumentLink associated with the Book
             String imageUrl = getBookImage(book.Id);
             
-            bookWrappers.add(new BookWrapper(book, imageUrl,'Test', 'Test', 'Test', 'Test'));
+            bookWrappers.add(new BookWrapper(book, imageUrl,'', '', '', ''));
         }
 
         return bookWrappers;

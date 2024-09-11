@@ -1,0 +1,22 @@
+.author-tile {
+    padding: 1rem;
+    border: 1px solid #ddd;
+    margin: 1rem;
+    font-size: larger;
+}
+
+
+
+.author-image {
+    margin-bottom: 0.8rem;
+    margin-left: 1rem;
+    width: 14.5rem;
+    height: 22rem;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.author-title {
+    font-weight: bold;
+}
+

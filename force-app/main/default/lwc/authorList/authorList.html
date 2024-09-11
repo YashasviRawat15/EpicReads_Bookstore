@@ -1,0 +1,36 @@
+<template>
+    <lightning-card>
+        <div class="container">
+            <div class="Author-list">
+                <template if:true={authors}>
+                    <div class="slds-grid slds-wrap">
+                        <template for:each={authors} for:item="author">
+                            <div key={author.author.Id} class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                                <c-author-tile
+                                author-id={author.author.Id}
+                                author-name={author.author.Name}
+                                author-image-url={author.imageUrl}
+                                author-nationality={author.author.Nationality__c}
+                                author-biography={author.author.Biography__c}
+                                    onauthorselect={handleAuthorSelect} >
+                                    
+                                </c-author-tile>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+                <template if:true={error}>
+                    <p>{error}</p>
+                </template>
+            </div>
+            
+            
+            <div class="author-detail" if:true={isAuthorDetailVisible}>
+                <c-author-detail 
+                    record-id={selectedAuthorId} 
+                    onbacktolist={handleBackToList}>
+                </c-author-detail>
+            </div>
+        </div>
+    </lightning-card>
+</template>

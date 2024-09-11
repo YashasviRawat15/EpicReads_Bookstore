@@ -1,0 +1,31 @@
+<template>
+    <lightning-card >
+        <div class="author-details">
+            <lightning-button-icon icon-name="utility:back" alternative-text="Back" onclick={handleBackToList} class="slds-m-bottom_small"></lightning-button-icon>
+    <template if:true={author}>
+        
+        <lightning-layout>
+            <lightning-layout-item class="author-img">
+                
+                <img src={author.imageUrl} alt="Author Image" />
+            
+            </lightning-layout-item>
+                <lightning-layout-item>
+            <div class="author-info">
+                <h1 class="heading">{author.Name}</h1>
+                <p><strong>Nationality: </strong> {author.Nationality__c}</p>
+                <p><strong>Publisher:</strong> {author.Biography__c}</p>
+                
+            </div>
+            </lightning-layout-item>
+        </lightning-layout>
+        
+    </template>
+    <template if:true={error}>
+        <p>{error}</p>
+    </template>
+
+</div>
+</lightning-card>
+</template>
+

@@ -1,0 +1,32 @@
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.author-list {
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.5s ease;
+    position: relative;
+    z-index: 1; 
+}
+
+.author-detail {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%; 
+    height: 100%;
+    transform: translateX(100%); 
+    transition: transform 0.5s ease-in-out;
+    z-index: 2; 
+    background-color: #ffffff;
+    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+:host([data-show-author-detail]) .author-detail {
+    transform: translateX(0); 
+}
+
+
