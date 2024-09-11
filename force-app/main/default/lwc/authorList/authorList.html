@@ -21,12 +21,13 @@
                 </template>
             </div>
 
-            <div class="author-detail" if:true={isAuthorDetailVisible}>
-                <c-author-detail 
-                    record-id={selectedAuthorId} 
-                    onbacktolist={handleBackToList}>
+            <!-- Author Details Modal -->
+            <template if:true={isModalOpen}>
+                <c-author-detail
+                    record-id={selectedAuthorId}
+                    onclose={handleCloseModal}>
                 </c-author-detail>
-            </div>
+            </template>
         </div>
     </lightning-card>
 </template>

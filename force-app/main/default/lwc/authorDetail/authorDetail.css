@@ -1,27 +1,33 @@
 .author-details{
     padding:3rem;
-    height: 50%;
     padding-bottom: 0;
 }
 
+.modal-body{
+    height: 18rem;
+}
+
 img{
-    height: 33rem;
-    width: 22rem;
-    border: 1px black;
-    
+    height: 10rem;
+    width: 10rem;
+    border: 2px black;
+    border-radius: 1rem;
     margin-top: 0.6rem;
 }
 
 .author-info{
+    margin-top: 0.6rem;
     margin-left: 5rem;
-    font-size: large;
+    font-size: larger;
     width: 60%;
     position: absolute;
     right: 3rem;
+    height: 15rem;
+    overflow-y: scroll;
 }
 
 .author-info p {
-    margin-bottom: 0.5rem;
+    
 }
 
 .heading{

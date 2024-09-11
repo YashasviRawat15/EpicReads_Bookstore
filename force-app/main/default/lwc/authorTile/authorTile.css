@@ -17,10 +17,9 @@
 }
 
 .author-title {
-    align-items: center;
-    justify-content: center;
+    
     font-weight: bold;
     width: 80%;
-    margin-left: auto;
+    margin-left: 1rem;
 }
 

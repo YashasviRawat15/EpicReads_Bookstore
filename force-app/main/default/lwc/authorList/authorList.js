@@ -3,16 +3,16 @@ import getAuthors from '@salesforce/apex/AuthorController.getAuthors';
 
 export default class AuthorList extends LightningElement {
     @track authors = [];
-    @track selectedAuthorId; 
-    @track showAuthorDetail = false;
-    @track error;
+    @track selectedAuthorId;
+    @track isModalOpen = false;
+    error;
 
     @wire(getAuthors)
     wiredAuthors({ error, data }) {
         if (data) {
             this.authors = data.map(author => ({
                 ...author,
-                imageUrl: author.imageUrl // Image URL from Apex
+                imageUrl: author.imageUrl
             }));
         } else if (error) {
             this.error = error;
@@ -21,19 +21,11 @@ export default class AuthorList extends LightningElement {
 
     handleAuthorSelect(event) {
         this.selectedAuthorId = event.detail.authorId;
-        this.showAuthorDetail = true;
+        this.isModalOpen = true;
     }
 
-    handleBackToList() {
-        this.showAuthorDetail = false;
+    handleCloseModal() {
+        this.isModalOpen = false;
         this.selectedAuthorId = null;
-    }
-
-    get isAuthorListVisible() {
-        return !this.showAuthorDetail; 
-    }
-
-    get isAuthorDetailVisible() {
-        return this.showAuthorDetail;
     }
 }

@@ -19,8 +19,8 @@ export default class AuthorDetail extends LightningElement {
         }
     }
 
-    handleBackToList() {
-        const backEvent = new CustomEvent('backtolist');
-        this.dispatchEvent(backEvent);
+    handleClose() {
+        const closeEvent = new CustomEvent('close');
+        this.dispatchEvent(closeEvent);
     }
 }
