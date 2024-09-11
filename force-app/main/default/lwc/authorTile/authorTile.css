@@ -10,13 +10,17 @@
 .author-image {
     margin-bottom: 0.8rem;
     margin-left: 1rem;
-    width: 14.5rem;
-    height: 22rem;
+    width: 10rem;
+    height: 10rem;
     margin-top: 0;
     padding-top: 0;
 }
 
 .author-title {
+    align-items: center;
+    justify-content: center;
     font-weight: bold;
+    width: 80%;
+    margin-left: auto;
 }
 

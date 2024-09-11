@@ -7,19 +7,12 @@ export default class AuthorDetail extends LightningElement {
     error;
 
     @wire(getAuthorDetails, { authorId: '$recordId' })
-    wiredBook({ error, data }) {
+    wiredAuthor({ error, data }) {
         if (data) {
-
-            console.log('Author data:', data);
             this.author = {
                 ...data.author,
-                
                 imageUrl: data.imageUrl || '',
-                
-               
-                
             };
-            
         } else if (error) {
             this.error = error;
             console.error('Error:', error);
@@ -30,6 +23,4 @@ export default class AuthorDetail extends LightningElement {
         const backEvent = new CustomEvent('backtolist');
         this.dispatchEvent(backEvent);
     }
-
-    
 }

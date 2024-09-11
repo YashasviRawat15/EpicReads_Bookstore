@@ -2,18 +2,17 @@ import { LightningElement, track, wire } from 'lwc';
 import getAuthors from '@salesforce/apex/AuthorController.getAuthors';
 
 export default class AuthorList extends LightningElement {
-    @track author = [];
+    @track authors = [];
     @track selectedAuthorId; 
     @track showAuthorDetail = false;
-    @track detailTopPosition = '0px';
-    error;
+    @track error;
 
     @wire(getAuthors)
     wiredAuthors({ error, data }) {
         if (data) {
             this.authors = data.map(author => ({
                 ...author,
-                imageUrl: author.imageUrl// Image URL from Apex
+                imageUrl: author.imageUrl // Image URL from Apex
             }));
         } else if (error) {
             this.error = error;
@@ -21,26 +20,13 @@ export default class AuthorList extends LightningElement {
     }
 
     handleAuthorSelect(event) {
-        
-        const authorTile = event.currentTarget; 
-        const rect = authorTile.getBoundingClientRect(); 
-        const scrollTop = window.scrollY; 
-
-        this.detailTopPosition = `${rect.top + scrollTop}px`; 
-
-        this.selectedAuthorId = event.detail.AuthorId;
+        this.selectedAuthorId = event.detail.authorId;
         this.showAuthorDetail = true;
-
-        
-        this.template.host.dataset.showAuthorDetail = true;
     }
-
-    
 
     handleBackToList() {
         this.showAuthorDetail = false;
         this.selectedAuthorId = null;
-        this.template.host.dataset.showAuthorDetail = false;
     }
 
     get isAuthorListVisible() {
