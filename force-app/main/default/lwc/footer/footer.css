@@ -1,0 +1,98 @@
+.footer {
+    background-color: #f8f8f8;
+    padding: 15px;
+    font-family: Arial, sans-serif;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.brand-section {
+    flex: 1;
+    padding: 20px;
+    text-align: left;
+}
+
+.brand-name {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.brand-description {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+.social-icons {
+    margin-top: 10px;
+}
+
+.social-icon {
+    margin-right: 10px;
+    color: #333;
+    cursor: pointer;
+}
+
+.links-section {
+    display: flex;
+    flex: 2;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.link-column h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.link-column ul {
+    list-style: none;
+    padding: 0;
+}
+
+.link-column ul li {
+    margin-bottom: 5px;
+}
+
+.link-column ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+.link-column ul li a:hover {
+    text-decoration: underline;
+}
+
+.support-section {
+    text-align: left;
+}
+
+.support-section p {
+    margin-bottom: 10px;
+}
+
+.app-icons img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #ddd;
+    font-size: 12px;
+    flex-wrap: wrap;
+}
+
+.payment-options img {
+    height: 20px;
+    margin-left: 10px;
+}

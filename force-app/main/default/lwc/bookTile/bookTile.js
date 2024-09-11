@@ -1,13 +1,13 @@
 import { LightningElement, api } from 'lwc';
 
 export default class BookTile extends LightningElement {
-    @api bookImageUrl;
+    @api bookImageUrl;  
     @api bookName;
     @api price;
     @api avgRating;
     @api reviewCount;
     @api bookId;
-    
+
     quantity = 1;
 
     star1 = false;

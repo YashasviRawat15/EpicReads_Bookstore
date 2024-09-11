@@ -1,22 +1,87 @@
 public with sharing class BookController {
 
-    // Return a list of books with their details and images stored in ContentDocument
     @AuraEnabled(cacheable=true)
     public static List<BookWrapper> getBooks() {
         List<BookWrapper> bookWrappers = new List<BookWrapper>();
 
-        // Query the Book__c records
         List<Book__c> books = [SELECT Id, Name, Price__c, Average_Rating__c, No_of_Reviews__c FROM Book__c LIMIT 50];
 
         for (Book__c book : books) {
-            // Get the ContentDocumentLink associated with the Book
             String imageUrl = getBookImage(book.Id);
-            
-            bookWrappers.add(new BookWrapper(book, imageUrl,'', '', '', ''));
+            bookWrappers.add(new BookWrapper(book, imageUrl, '', '', '', ''));
         }
 
         return bookWrappers;
     }
+
+    @AuraEnabled(cacheable=true)
+    public static List<BookWrapper> getBooksByGenre(String genre) {
+        List<BookWrapper> bookWrappers = new List<BookWrapper>();
+        string genreName = '';
+
+        if (genre == 'academic-and-educational') {
+            genreName = 'Academic & Educational';
+        }
+        else if (genre == 'business-and-economics') {
+                genreName = 'Business & Economics';
+            }
+        else if (genre == 'children') {
+                genreName = 'Children\'s Books';
+            }
+        else if (genre == 'fiction') {
+                genreName = 'Fiction';
+            }
+        else if (genre == 'non-fiction') {
+                genreName = 'Non-Fiction';
+            }
+        else if (genre == 'religious-and-spiritual') {
+                genreName = 'Religious & Spiritual';
+            }
+        
+
+        List<Book__c> books = [
+            SELECT Id, Name, Price__c, Average_Rating__c, No_of_Reviews__c 
+            FROM Book__c 
+            WHERE Category__r.Name = :genreName LIMIT 50
+        ];
+
+        for (Book__c book : books) {
+            String imageUrl = getBookImage(book.Id);
+            bookWrappers.add(new BookWrapper(book, imageUrl, '', '', '', ''));
+        }
+
+        return bookWrappers;
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static List<BookWrapper> getBooksByLanguage(String language) {
+        List<BookWrapper> bookWrappers = new List<BookWrapper>();
+        List<Book__c> books = new List<Book__c> ();
+       
+
+            if(language == 'hindi' || language == 'english'){
+       books = [
+            SELECT Id, Name, Price__c, Average_Rating__c, No_of_Reviews__c 
+            FROM Book__c 
+            WHERE Language__c = :language LIMIT 50
+        ];}
+
+        else{
+            books = [
+            SELECT Id, Name, Price__c, Average_Rating__c, No_of_Reviews__c 
+            FROM Book__c 
+            WHERE Language__c != 'Hindi' AND Language__c != 'English'
+        ];
+        }
+
+        for (Book__c book : books) {
+            String imageUrl = getBookImage(book.Id);
+            bookWrappers.add(new BookWrapper(book, imageUrl, '', '', '', ''));
+        }
+
+        return bookWrappers;
+    }
+
 
     // Get details for a single book
     @AuraEnabled(cacheable=true)
@@ -41,17 +106,20 @@ public static BookWrapper getBookDetails(Id bookId) {
 }
 
 
-   
+
+
+
     private static String getBookImage(Id bookId) {
-       
         List<ContentDocumentLink> docLinks = [
-            SELECT ContentDocumentId FROM ContentDocumentLink WHERE LinkedEntityId = :bookId LIMIT 1
+            SELECT ContentDocumentId 
+            FROM ContentDocumentLink 
+            WHERE LinkedEntityId = :bookId 
+            LIMIT 1
         ];
-        
+
         if (!docLinks.isEmpty()) {
-            // Query ContentVersion to get the latest image version of the document
             List<ContentVersion> contentVersions = [
-                SELECT Id, ContentDocumentId, VersionData 
+                SELECT Id 
                 FROM ContentVersion 
                 WHERE ContentDocumentId = :docLinks[0].ContentDocumentId 
                 AND IsLatest = true LIMIT 1
@@ -59,27 +127,46 @@ public static BookWrapper getBookDetails(Id bookId) {
 
             if (!contentVersions.isEmpty()) {
                 return 'https://tmc-f6-dev-ed.develop.my.salesforce.com/sfc/servlet.shepherd/version/download/' + contentVersions[0].Id;
-                //return '/servlet/servlet.FileDownload?file={'+ contentVersions[0].Id +'}';
             }
         }
-        return null; 
+
+        return null;
     }
 
-    // Add to Cart logic 
-    @AuraEnabled
-    public static String addToCart(Id bookId, Integer quantity) {
-        
-        return 'Book with ID ' + bookId + ' has been added to the cart with quantity: ' + quantity;
+    @AuraEnabled(cacheable=true)
+    public static List<Review__c> getBookReviews(Id bookId) {
+        if (bookId == null) {
+            throw new AuraHandledException('Invalid book ID');
+        }
+    
+        List<Review__c> allReviews = [
+            SELECT Id, Rating__c, Review_Text__c, Review_Date__c, CreatedBy.Name 
+            FROM Review__c 
+            WHERE Book__c = :bookId
+            ORDER BY Review_Date__c DESC
+            LIMIT 10
+        ];
+    
+        // Filter reviews that have non-empty review text
+        List<Review__c> nonEmptyReviews = new List<Review__c>();
+        for (Review__c review : allReviews) {
+            if (String.isNotBlank(review.Review_Text__c)) {
+                nonEmptyReviews.add(review);
+            }
+    
+            // Stop once we have 5 non-empty reviews
+            if (nonEmptyReviews.size() == 5) {
+                break;
+            }
+        }
+    
+        return nonEmptyReviews;
     }
+    
+    
 
-    // Add to Wishlist logic 
-    @AuraEnabled
-    public static String addToWishlist(Id bookId) {
-       
-        return 'Book with ID ' + bookId + ' has been added to the wishlist';
-    }
 
-    // Wrapper class to include the book and its image URL
+
     public class BookWrapper {
         @AuraEnabled
         public Book__c book { get; set; }
@@ -93,7 +180,6 @@ public static BookWrapper getBookDetails(Id bookId) {
         public String category { get; set; }
         @AuraEnabled
         public String subCategory { get; set; }
-        
 
         public BookWrapper(Book__c book, String imageUrl, String author, String publisher, String category, String subCategory) {
             this.book = book;

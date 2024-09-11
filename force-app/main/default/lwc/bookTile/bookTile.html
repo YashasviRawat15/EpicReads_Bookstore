@@ -1,8 +1,8 @@
 <template>
-    <div class="book-tile" onclick={handleBookClick}>
+    <div class="book-tile">
         <lightning-card>
             <lightning-button-icon icon-name="utility:heart" alternative-text="Add to Wishlist" onclick={handleWishlist} class="heartIcon"></lightning-button-icon>
-            <img src={bookImageUrl} alt={bookName} class="book-image"/>
+            <img src={bookImageUrl} alt={bookName} class="book-image"  onclick={handleBookClick}/>
             <p class="book-title">{bookName}</p>
             <p class="book-price">₹{price}</p>
 

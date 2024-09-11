@@ -1,41 +1,99 @@
 import { LightningElement, wire, track } from 'lwc';
 import getBooks from '@salesforce/apex/BookController.getBooks';
-import addToCart from '@salesforce/apex/BookController.addToCart';
-import addToWishlist from '@salesforce/apex/BookController.addToWishlist';
+import getBooksByGenre from '@salesforce/apex/BookController.getBooksByGenre';
+import getBooksByLanguage from '@salesforce/apex/BookController.getBooksByLanguage';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class BookList extends LightningElement {
     @track books = [];
-    @track selectedBookId; // Track the selected book ID
+    @track selectedBookId;
     @track showBookDetail = false;
     @track detailTopPosition = '0px';
     error;
 
-    @wire(getBooks)
-    wiredBooks({ error, data }) {
-        if (data) {
-            this.books = data.map(book => ({
-                ...book,
-                imageUrl: book.imageUrl// Image URL from Apex
-            }));
-        } else if (error) {
-            this.error = error;
+    get urlParams() {
+        const path = window.location.pathname;
+        const parts = path.split('/');
+        return parts[parts.length - 1]; // Last part of URL (genre/language/custom-page)
+    }
+
+    connectedCallback() {
+        this.fetchBooks();
+    }
+
+    fetchBooks() {
+        const param = this.urlParams;
+
+        if (param === 'custom-page') {
+            this.getAllBooks();
+        } else if (this.isGenre(param)) {
+            this.getBooksByGenre(param);
+        } else if (this.isLanguage(param)) {
+            this.getBooksByLanguage(param);
         }
     }
 
-    handleBookSelect(event) {
-        // Capture the current book tile that was clicked
-        const bookTile = event.currentTarget; 
-        const rect = bookTile.getBoundingClientRect(); // Get the bounding box of the clicked tile
-        const scrollTop = window.scrollY; // Get the current scroll position (modern alternative)
+    isGenre(param) {
+        const genres = [
+            'academic-and-educational', 'business-and-economics', 'children',
+            'fiction', 'non-fiction', 'religious-and-spiritual'
+        ];
+        return genres.includes(param.toLowerCase());
+    }
 
-        // Calculate the actual top position of the bookDetail component
-        this.detailTopPosition = `${rect.top + scrollTop}px`; 
+    isLanguage(param) {
+        const languages = ['english', 'hindi', 'other-languages'];
+        return languages.includes(param.toLowerCase());
+    }
+
+    getAllBooks() {
+        getBooks()
+            .then(data => {
+                this.books = data.map(book => ({
+                    ...book,
+                    imageUrl: book.imageUrl
+                }));
+            })
+            .catch(error => {
+                this.error = error;
+            });
+    }
+
+    getBooksByGenre(genre) {
+        getBooksByGenre({ genre })
+            .then(data => {
+                this.books = data.map(book => ({
+                    ...book,
+                    imageUrl: book.imageUrl
+                }));
+            })
+            .catch(error => {
+                this.error = error;
+            });
+    }
+
+    getBooksByLanguage(language) {
+        getBooksByLanguage({ language })
+            .then(data => {
+                this.books = data.map(book => ({
+                    ...book,
+                    imageUrl: book.imageUrl
+                }));
+            })
+            .catch(error => {
+                this.error = error;
+            });
+    }
+
+    handleBookSelect(event) {
+        const bookTile = event.currentTarget;
+        const rect = bookTile.getBoundingClientRect();
+        const scrollTop = window.scrollY;
+        this.detailTopPosition = `${rect.top + scrollTop}px`;
 
         this.selectedBookId = event.detail.bookId;
         this.showBookDetail = true;
 
-        // Apply sliding effect for the book detail
         this.template.host.dataset.showBookDetail = true;
     }
 
@@ -86,11 +144,10 @@ export default class BookList extends LightningElement {
     }
 
     get isBookListVisible() {
-        return !this.showBookDetail; // If the book detail is not shown, display the book list
+        return !this.showBookDetail;
     }
 
     get isBookDetailVisible() {
         return this.showBookDetail;
     }
-
 }
