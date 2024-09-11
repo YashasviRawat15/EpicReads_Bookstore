@@ -1,0 +1,27 @@
+<template>
+    <lightning-card title="Account Details" icon-name="standard:account">
+        <div class="account-name">
+            <h1>{accountName}</h1>
+        </div>
+
+        <template if:true={contacts}>
+            <lightning-combobox 
+                name="contactDropdown" 
+                label="Select Contact"
+                value={selectedContactId}
+                placeholder="Select a contact"
+                options={contactOptions}
+                onchange={handleContactChange}>
+            </lightning-combobox>
+        </template>
+
+        <template if:true={selectedContact}>
+            <div class="contact-details">
+                <p><strong>Name:</strong> {selectedContact.Name}</p>
+                <p><strong>Email:</strong> {selectedContact.Email}</p>
+                <p><strong>Phone:</strong> {selectedContact.Phone}</p>
+                <p><strong>Address:</strong> {formattedAddress}</p>
+            </div>
+        </template>
+    </lightning-card>
+</template>

@@ -1,0 +1,13 @@
+.account-name h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.contact-details p {
+    margin: 5px 0;
+}
+
+.lightning-combobox {
+    margin-bottom: 20px;
+}

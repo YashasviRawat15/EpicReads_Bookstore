@@ -1,20 +1,21 @@
 .book-details{
-    padding:3rem;
+    padding:6rem;
     height: 50%;
     padding-bottom: 0;
 }
 
 img{
-    height: 33rem;
-    width: 22rem;
+    height: 27rem;
+    width: 18rem;
     border: 1px black;
     
     margin-top: 0.6rem;
 }
 
 .book-info{
+    margin-top: 1rem;
     margin-left: 5rem;
-    font-size: large;
+    
     width: 60%;
     position: absolute;
     right: 3rem;
@@ -25,11 +26,27 @@ img{
 }
 
 .heading{
-    font-size: xx-large;
+    font-size: large;
     font-weight: bold;
     margin-bottom: 1.5rem;
 }
 
 .cart-button{
     margin-right: 1.5rem;
+}
+
+
+.slds-card {
+    padding: 1rem;
+}
+.review {
+    border-bottom: 1px solid #ccc;
+    padding: 1rem 0;
+}
+.review-form-section {
+    margin-top: 2rem;
+}
+
+h2{
+    font-size: larger;
 }

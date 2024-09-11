@@ -144,18 +144,18 @@ public static BookWrapper getBookDetails(Id bookId) {
             FROM Review__c 
             WHERE Book__c = :bookId
             ORDER BY Review_Date__c DESC
-            LIMIT 10
+            LIMIT   50
         ];
     
-        // Filter reviews that have non-empty review text
+        
         List<Review__c> nonEmptyReviews = new List<Review__c>();
         for (Review__c review : allReviews) {
             if (String.isNotBlank(review.Review_Text__c)) {
                 nonEmptyReviews.add(review);
             }
     
-            // Stop once we have 5 non-empty reviews
-            if (nonEmptyReviews.size() == 5) {
+            
+            if (nonEmptyReviews.size() == 10) {  
                 break;
             }
         }
@@ -164,7 +164,22 @@ public static BookWrapper getBookDetails(Id bookId) {
     }
     
     
-
+    @AuraEnabled
+    public static void submitReview(Id bookId, Decimal rating, String reviewText) {
+        if (bookId == null || rating == null || reviewText == null || reviewText.trim() == '') {
+            throw new AuraHandledException('All fields are required');
+        }
+        
+        Review__c newReview = new Review__c(
+            Book__c = bookId,
+            Rating__c = rating,
+            Review_Text__c = reviewText,
+            Review_Date__c = Date.today()
+        );
+    
+        insert newReview;
+    }
+    
 
 
     public class BookWrapper {
