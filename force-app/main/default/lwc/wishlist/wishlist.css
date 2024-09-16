@@ -1,0 +1,31 @@
+.wishlist-container {
+    padding: 20px;
+}
+
+.book-image {
+    
+    height: 10rem;
+    object-fit: cover;
+    margin-right: 2rem;
+    
+}
+
+.heading{
+    font-weight: bold;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.price {
+    color: green;
+    font-weight: bold;
+    font-size: large;
+    margin-bottom: 0.6rem;
+}
+
+.slds-card {
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    line-height: 1.5rem;
+}
