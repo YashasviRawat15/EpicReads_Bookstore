@@ -11,3 +11,21 @@
 .lightning-combobox {
     margin-bottom: 20px;
 }
+
+.details{
+    margin: 1rem;
+}
+
+.form{
+    padding: 1rem;
+}
+
+.cancel-button{
+    margin-right: 1rem;
+}
+
+.new-contact-button{
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+}

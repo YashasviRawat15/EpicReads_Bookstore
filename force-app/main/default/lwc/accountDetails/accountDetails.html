@@ -1,27 +1,75 @@
 <template>
     <lightning-card title="Account Details" icon-name="standard:account">
-        <div class="account-name">
-            <h1>{accountName}</h1>
-        </div>
-
-        <template if:true={contacts}>
-            <lightning-combobox 
-                name="contactDropdown" 
-                label="Select Contact"
-                value={selectedContactId}
-                placeholder="Select a contact"
-                options={contactOptions}
-                onchange={handleContactChange}>
-            </lightning-combobox>
-        </template>
-
-        <template if:true={selectedContact}>
-            <div class="contact-details">
-                <p><strong>Name:</strong> {selectedContact.Name}</p>
-                <p><strong>Email:</strong> {selectedContact.Email}</p>
-                <p><strong>Phone:</strong> {selectedContact.Phone}</p>
-                <p><strong>Address:</strong> {formattedAddress}</p>
+        <div class="details">
+            <div class="account-header">
+                <div class="account-name">
+                    <h1>{accountName}</h1>
+                </div>
+                <!-- New Contact Button -->
+                <lightning-button 
+                    label="New Contact" 
+                    class="new-contact-button"
+                    onclick={openNewContactForm}
+                    variant="brand"
+                    if:true={canAddContact}>
+                </lightning-button>
             </div>
-        </template>
+
+            <template if:true={contacts}>
+                <lightning-combobox 
+                    name="contactDropdown" 
+                    label="Select Contact"
+                    value={selectedContactId}
+                    placeholder="Select a contact"
+                    options={contactOptions}
+                    onchange={handleContactChange}>
+                </lightning-combobox>
+            </template>
+
+            <template if:true={selectedContact}>
+                <div class="contact-details">
+                    <p><strong>Name:</strong> {selectedContact.Name}</p>
+                    <p><strong>Email:</strong> {selectedContact.Email}</p>
+                    <p><strong>Phone:</strong> {selectedContact.Phone}</p>
+                    <p><strong>Address:</strong> {formattedAddress}</p>
+                </div>
+            </template>
+
+            <!-- Contact Form Modal -->
+            <template if:true={isModalOpen}>
+                <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <header class="slds-modal__header">
+                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                                <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+                                <span class="slds-assistive-text">Close</span>
+                            </button>
+                            <h2 class="slds-text-heading_medium">New Contact</h2>
+                        </header>
+                        <div class="slds-modal__content form">
+                            <lightning-input label="First Name" required value={firstName} onchange={handleInputChange} data-field="firstName"></lightning-input>
+                            <lightning-input label="Last Name" required value={lastName} onchange={handleInputChange} data-field="lastName"></lightning-input>
+                            <lightning-input label="Email" type="email" value={email} onchange={handleInputChange} data-field="email"></lightning-input>
+                            <lightning-input label="Phone Number" type="tel" value={phoneNumber} onchange={handleInputChange} data-field="phoneNumber"></lightning-input>
+                            <lightning-input label="Mailing Street" value={mailingStreet} onchange={handleInputChange} data-field="mailingStreet"></lightning-input>
+                            <lightning-input label="Mailing City" value={mailingCity} onchange={handleInputChange} data-field="mailingCity"></lightning-input>
+                            <lightning-input label="Mailing State" value={mailingState} onchange={handleInputChange} data-field="mailingState"></lightning-input>
+                            <lightning-input label="Mailing Postal Code" value={mailingPostalCode} onchange={handleInputChange} data-field="mailingPostalCode"></lightning-input>
+                            <lightning-input label="Mailing Country" value={mailingCountry} onchange={handleInputChange} data-field="mailingCountry"></lightning-input>
+                        </div>
+                        <footer class="slds-modal__footer">
+                            <lightning-button variant="neutral" label="Cancel" onclick={closeModal} class="cancel-button"></lightning-button>
+                            <lightning-button variant="brand" label="Save" onclick={saveNewContact}></lightning-button>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </template>
+
+            <!-- Max contacts message -->
+            <template if:true={hasMaxContacts}>
+                <p class="error-message">This account cannot have more than 5 contacts.</p>
+            </template>
+        </div>
     </lightning-card>
 </template>
