@@ -13,7 +13,7 @@ public with sharing class AccountController {
         //return null;
     }
 
-    @AuraEnabled
+    @AuraEnabled(cacheable=true)
     public static void createNewContact(Map<String, String> contactData, Id accountId) {
         Contact newContact = new Contact(
             FirstName = contactData.get('firstName'),
@@ -28,6 +28,24 @@ public with sharing class AccountController {
             AccountId = '001NS00000WkMKr'
         );
         insert newContact;
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static Contact getContactDetails(Id contactId) {
+        system.debug('Inside getContactDetails');
+        system.debug('Contact ID --> ' + contactId);
+       
+            // Query to get the contact details by ID
+            Contact contactDetails = [
+                SELECT Id, FirstName, LastName, Email, Phone, MailingStreet, MailingCity, MailingState, MailingPostalCode, MailingCountry
+                FROM Contact
+                WHERE Id = :contactId
+                LIMIT 1
+            ];
+
+            // Return the contact record
+            return contactDetails;
+       
     }
 
 }

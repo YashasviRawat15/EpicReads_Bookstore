@@ -1,0 +1,76 @@
+<template>
+    <div class="form-container">
+        <div class="details">
+            <div class="billing-address">
+                <h3>Billing Address</h3>
+                <div class="form-group">
+                    <lightning-input label="Full Name" type="text" value={contactInfo.fullName} id="fullName" onchange={handleInputChange}></lightning-input>
+                </div>
+                <div class="form-group">
+                    <lightning-input label="Email" type="email" value={contactInfo.email} id="email" onchange={handleInputChange}></lightning-input>
+                </div>
+                <div class="form-group">
+                    <lightning-input label="Address" type="text" value={contactInfo.street} id="address" onchange={handleInputChange}></lightning-input>
+                </div>
+                <div class="form-group">
+                    <lightning-input label="City" type="text" value={contactInfo.city} id="city" onchange={handleInputChange}></lightning-input>
+                </div>
+                <div class="form-group">
+                    <lightning-input label="State" type="text" value={contactInfo.state} id="state" onchange={handleInputChange}></lightning-input>
+                </div>
+                <div class="form-group">
+                    <lightning-input label="Zip Code" type="text" value={contactInfo.postalCode} id="zipCode" onchange={handleInputChange}></lightning-input>
+                </div>
+            </div>
+
+            <div class="payment-section">
+                <h3>Payment Details</h3>
+                <!-- Payment fields as before -->
+                <div class="card-logos">
+                    <img src={PayPal} alt="PayPal" />
+                    <img src={MasterCard} alt="Mastercard" />
+                    <img src={Visa} alt="Visa" />
+                    <img src={AmericanExpress} alt="American Express" />
+                </div>
+                <div class="form-group">
+                    <lightning-input label="Name On Card" type="text" id="nameOnCard" onchange={handleInputChange}></lightning-input>
+                </div>
+                <div class="form-group">
+                    <lightning-input label="Credit Card Number" type="text" id="creditCardNumber" onchange={handleInputChange}></lightning-input>
+                </div>
+                <div class="form-group">
+                    <lightning-combobox label="Exp Month" options={monthOptions} onchange={handleInputChange} id="expMonth"></lightning-combobox>
+                </div>
+                <div class="form-group">
+                    <lightning-input label="Exp Year" type="text" id="expYear" onchange={handleInputChange}></lightning-input>
+                </div>
+                <div class="form-group">
+                    <lightning-input label="CVV" type="text" id="cvv" onchange={handleInputChange}></lightning-input>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="submit-container">
+            <h3>Total Amount: ₹{totalAmount}    </h3>
+            <button class="checkout-btn">Proceed To Checkout</button>
+        </div>
+    </div>
+</template>
+
+
+<!--
+<template>
+    <lightning-card title="Payment Details">
+        <div class="slds-m-around_medium">
+            <lightning-input label="Cardholder Name" value={cardholderName} onchange={handleInputChange} data-id="cardholderName"></lightning-input>
+            <lightning-input label="Card Number" type="number" value={cardNumber} onchange={handleInputChange} data-id="cardNumber"></lightning-input>
+            <lightning-input label="Expiry Date" value={expiryDate} onchange={handleInputChange} data-id="expiryDate"></lightning-input>
+            <lightning-input label="CVV" type="number" value={cvv} onchange={handleInputChange} data-id="cvv"></lightning-input>
+        </div>
+        <footer class="slds-modal__footer">
+            <lightning-button label="Submit Payment" onclick={submitPayment}></lightning-button>
+        </footer>
+    </lightning-card>
+</template>
+-->

@@ -1,4 +1,5 @@
 import { LightningElement, wire, track } from 'lwc';
+import { NavigationMixin } from 'lightning/navigation'; 
 import getCartItems from '@salesforce/apex/CartController.getCartItems';
 import getCartTotalPrice from '@salesforce/apex/CartController.getCartTotalPrice';
 import checkout from '@salesforce/apex/CartController.checkout';
@@ -6,13 +7,12 @@ import removeItemFromCart from '@salesforce/apex/CartController.removeItemFromCa
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
 
-export default class CartPage extends LightningElement {
+export default class CartPage extends NavigationMixin (LightningElement) {
     @track cartItems = [];
     @track totalPrice = 0;
-    @track isModalOpen = false;
-    @track accountId = ''; 
-    @track contactId = ''; 
-    @track paymentMethod = 'Credit Card'; 
+    @track accountId = '001NS00000WkMKr'; 
+    @track contactId = '003NS00000Dj76r'; 
+    @track isOrderModalOpen = false;  // Order confirmation modal
     wiredCartItems; 
     wiredCartTotal
 
@@ -39,19 +39,30 @@ wiredCartItems(value) {
         }
     }
 
-    // Handle Checkout Button Click
     handleCheckout() {
-        this.isModalOpen = true;
+        this.isOrderModalOpen = true;
     }
 
-    // Close the Modal
-    closeModal() {
-        this.isModalOpen = false;
+    // Close the Order Confirmation Modal
+    closeOrderModal() {
+        this.isOrderModalOpen = false;
     }
 
     // Confirm the Order
-    confirmOrder() {
-        checkout({ 
+   
+
+        confirmOrder() {
+            this[NavigationMixin.Navigate]({
+                type: 'standard__webPage',
+                attributes: {
+                    url: `/payment?totalAmount=${this.totalPrice}` // Redirect to payment page with the total amount
+                }
+            });
+        
+
+       
+        
+        /*checkout({ 
             accountId: '001NS00000WkMKr', //this.accountId
             contactId: '003NS00000Dj76r' //this.contactId
            // paymentMethod: this.paymentMethod 
@@ -64,8 +75,9 @@ wiredCartItems(value) {
         .catch(error => {
             console.log('error in order' + error.body);
             this.showToast('Error placing order', error, 'error');
-        });
+        }); */
     }
+
 
     removeItem(event) {
         const cartItemId = event.currentTarget.dataset.id; // Get the cart item Id from the clicked button

@@ -83,8 +83,7 @@ public with sharing class CartController {
             Order_Date__c = System.now(),
             Total_Amount__c = cart.Cart_Total__c,
             Status__c = 'Pending'
-           // Payment_Method__c = paymentMethod,
-            //Prepaid__c = (paymentMethod == 'Prepaid')
+           
         );
         insert newOrder;
 

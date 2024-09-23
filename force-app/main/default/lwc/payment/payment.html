@@ -1,0 +1,28 @@
+<template>
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close" alternative-text="Close"
+                        onclick={closeModal} class="close-button"></lightning-button-icon>
+                    <h2 class="slds-text-heading_medium">Payment Details</h2>
+                </header>
+                <div class="slds-modal__content">
+                    <lightning-input label="Full Name" value={fullName} disabled></lightning-input>
+                    <lightning-input label="Email" value={email} disabled></lightning-input>
+                    <lightning-input label="Phone" value={phone} disabled></lightning-input>
+                    <lightning-input label="Mailing Address" value={formattedAddress} disabled></lightning-input>
+                    <lightning-input label="Credit Card Number" type="text" value={creditCardNumber} required></lightning-input>
+                    <lightning-input label="CVV" type="password" value={cvv} required></lightning-input>
+                    <lightning-input label="Expiration Date" type="text" value={expDate} required></lightning-input>
+                    <p>Total Order Amount: ₹{totalPrice}</p>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Cancel" onclick={closeModal} class="cancel-button"></lightning-button>
+                    <lightning-button label="Confirm Payment" onclick={confirmPayment}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>
