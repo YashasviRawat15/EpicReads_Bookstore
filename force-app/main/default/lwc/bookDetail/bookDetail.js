@@ -62,8 +62,14 @@ export default class BookDetail extends LightningElement {
 
     handleWishlist() {
         const addToWishlistEvent = new CustomEvent('addtowishlist', {
-            detail: { bookId: this.recordId }
+            detail: {
+                bookId: this.recordId,
+                contactId: '003NS00000Dj76r',
+                accountId:'001NS00000WkMKr'
+            }
         });
+
+        // Dispatch the event to the parent component
         this.dispatchEvent(addToWishlistEvent);
     }
 

@@ -30,7 +30,9 @@
             <div class="book-detail" if:true={isBookDetailVisible}>
                 <c-book-detail 
                     record-id={selectedBookId} 
-                    onbacktolist={handleBackToList}>
+                    onbacktolist={handleBackToList}
+                    onaddtocart={handleAddToCart}
+                    onaddtowishlist={handleAddToWishlist}>
                 </c-book-detail>
             </div>
         </div>

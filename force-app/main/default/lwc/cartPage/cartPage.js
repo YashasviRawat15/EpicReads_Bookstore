@@ -2,7 +2,9 @@ import { LightningElement, wire, track } from 'lwc';
 import getCartItems from '@salesforce/apex/CartController.getCartItems';
 import getCartTotalPrice from '@salesforce/apex/CartController.getCartTotalPrice';
 import checkout from '@salesforce/apex/CartController.checkout';
+import removeItemFromCart from '@salesforce/apex/CartController.removeItemFromCart';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { refreshApex } from '@salesforce/apex';
 
 export default class CartPage extends LightningElement {
     @track cartItems = [];
@@ -11,21 +13,25 @@ export default class CartPage extends LightningElement {
     @track accountId = ''; 
     @track contactId = ''; 
     @track paymentMethod = 'Credit Card'; 
+    wiredCartItems; 
+    wiredCartTotal
 
-    // Wire the cart items
     @wire(getCartItems)
-    wiredCartItems({ error, data }) {
-        if (data) {
-            console.log(data);
-            this.cartItems = data;
-        } else if (error) {
-            console.error('Error retrieving cart items: ', error);
-        }
+wiredCartItems(value) {
+    this.wiredCartItems = value; // Capture the response for refreshApex
+    const { data, error } = value;
+    if (data) {
+        this.cartItems = data;
+    } else if (error) {
+        console.error('Error retrieving cart items: ', error);
     }
+}
 
     // Wire the total price calculation
     @wire(getCartTotalPrice)
-    wiredCartTotal({ error, data }) {
+    wiredCartTotal(value) {
+        this.wiredCartTotal = value; // Capture the response for refreshApex
+        const { data, error } = value;
         if (data) {
             this.totalPrice = data;
         } else if (error) {
@@ -53,12 +59,28 @@ export default class CartPage extends LightningElement {
         .then(result => {
             this.showToast('Order Success', result, 'success');
             this.closeModal();
-            location.reload();
+            return refreshApex(this.wiredCartItems);
         })
         .catch(error => {
             console.log('error in order' + error.body);
             this.showToast('Error placing order', error, 'error');
         });
+    }
+
+    removeItem(event) {
+        const cartItemId = event.currentTarget.dataset.id; // Get the cart item Id from the clicked button
+        removeItemFromCart({ cartItemId })
+            .then(result => {
+                this.showToast('Success', result, 'success');
+                // Refresh cart data after removal or quantity update
+                return Promise.all([
+                    refreshApex(this.wiredCartItems),
+                    refreshApex(this.wiredCartTotal) // Refresh total price
+                ]);
+            })
+            .catch(error => {
+                this.showToast('Error', error.body.message, 'error');
+            });
     }
 
    

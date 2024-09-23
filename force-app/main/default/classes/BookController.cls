@@ -1,192 +1,184 @@
 public with sharing class BookController {
 
-    @AuraEnabled(cacheable=true)
-    public static List<BookWrapper> getBooks() {
-        List<BookWrapper> bookWrappers = new List<BookWrapper>();
+@AuraEnabled(cacheable=true)
+public static List<BookWrapper> getBooks() {
+    List<BookWrapper> bookWrappers = new List<BookWrapper>();
 
-        List<Book__c> books = [SELECT Id, Name, Price__c, Average_Rating__c, No_of_Reviews__c FROM Book__c LIMIT 50];
+    List<Book__c> books = [SELECT Id, Name, Price__c, Average_Rating__c, No_of_Reviews__c FROM Book__c LIMIT 50];
 
-        for (Book__c book : books) {
-            String imageUrl = getBookImage(book.Id);
-            bookWrappers.add(new BookWrapper(book, imageUrl, '', '', '', ''));
-        }
-
-        return bookWrappers;
+    for (Book__c book : books) {
+        String imageUrl = getBookImage(book.Id);
+        bookWrappers.add(new BookWrapper(book, imageUrl, '', '', '', ''));
     }
 
-    @AuraEnabled(cacheable=true)
-    public static List<BookWrapper> getBooksByGenre(String genre) {
-        List<BookWrapper> bookWrappers = new List<BookWrapper>();
-        String genreName = '';
+    return bookWrappers;
+}
 
-        if (genre == 'academic-and-educational') {
-            genreName = 'Academic & Educational';
-        } else if (genre == 'business-and-economics') {
-            genreName = 'Business & Economics';
-        } else if (genre == 'children') {
-            genreName = 'Children\'s Books';
-        } else if (genre == 'fiction') {
-            genreName = 'Fiction';
-        } else if (genre == 'non-fiction') {
-            genreName = 'Non-Fiction';
-        } else if (genre == 'religious-and-spiritual') {
-            genreName = 'Religious & Spiritual';
-        }
+@AuraEnabled(cacheable=true)
+public static List<BookWrapper> getBooksByGenre(String genre) {
+    List<BookWrapper> bookWrappers = new List<BookWrapper>();
+    String genreName = '';
 
-        List<Book__c> books = [
+    if (genre == 'academic-and-educational') {
+        genreName = 'Academic & Educational';
+    } else if (genre == 'business-and-economics') {
+        genreName = 'Business & Economics';
+    } else if (genre == 'children') {
+        genreName = 'Children\'s Books';
+    } else if (genre == 'fiction') {
+        genreName = 'Fiction';
+    } else if (genre == 'non-fiction') {
+        genreName = 'Non-Fiction';
+    } else if (genre == 'religious-and-spiritual') {
+        genreName = 'Religious & Spiritual';
+    }
+
+    List<Book__c> books = [
+        SELECT Id, Name, Price__c, Average_Rating__c, No_of_Reviews__c 
+        FROM Book__c 
+        WHERE Category__r.Name = :genreName LIMIT 50
+    ];
+
+    for (Book__c book : books) {
+        String imageUrl = getBookImage(book.Id);
+        bookWrappers.add(new BookWrapper(book, imageUrl, '', '', '', ''));
+    }
+
+    return bookWrappers;
+}
+
+@AuraEnabled(cacheable=true)
+public static List<BookWrapper> getBooksByLanguage(String language) {
+    List<BookWrapper> bookWrappers = new List<BookWrapper>();
+    List<Book__c> books;
+
+    if (language == 'hindi' || language == 'english') {
+        books = [
             SELECT Id, Name, Price__c, Average_Rating__c, No_of_Reviews__c 
             FROM Book__c 
-            WHERE Category__r.Name = :genreName LIMIT 50
+            WHERE Language__c = :language LIMIT 50
         ];
-
-        for (Book__c book : books) {
-            String imageUrl = getBookImage(book.Id);
-            bookWrappers.add(new BookWrapper(book, imageUrl, '', '', '', ''));
-        }
-
-        return bookWrappers;
-    }
-
-    @AuraEnabled(cacheable=true)
-    public static List<BookWrapper> getBooksByLanguage(String language) {
-        List<BookWrapper> bookWrappers = new List<BookWrapper>();
-        List<Book__c> books;
-
-        if (language == 'hindi' || language == 'english') {
-            books = [
-                SELECT Id, Name, Price__c, Average_Rating__c, No_of_Reviews__c 
-                FROM Book__c 
-                WHERE Language__c = :language LIMIT 50
-            ];
-        } else {
-            books = [
-                SELECT Id, Name, Price__c, Average_Rating__c, No_of_Reviews__c 
-                FROM Book__c 
-                WHERE Language__c != 'Hindi' AND Language__c != 'English'
-            ];
-        }
-
-        for (Book__c book : books) {
-            String imageUrl = getBookImage(book.Id);
-            bookWrappers.add(new BookWrapper(book, imageUrl, '', '', '', ''));
-        }
-
-        return bookWrappers;
-    }
-
-    @AuraEnabled(cacheable=true)
-    public static BookWrapper getBookDetails(Id bookId) {
-        if (bookId == null) {
-            throw new AuraHandledException('Invalid book ID');
-        }
-
-        Book__c book = [
-            SELECT Id, Name, Description__c, Price__c, Average_Rating__c, No_of_Reviews__c, Publisher__c, Author__c, Category__c, Sub_Category__c 
+    } else {
+        books = [
+            SELECT Id, Name, Price__c, Average_Rating__c, No_of_Reviews__c 
             FROM Book__c 
-            WHERE Id = :bookId 
-            LIMIT 1
+            WHERE Language__c != 'Hindi' AND Language__c != 'English'
         ];
-        Author__c author = [SELECT Name FROM Author__c WHERE Id = :book.Author__c];
-        Publisher__c publisher = [SELECT Name FROM Publisher__c WHERE Id = :book.Publisher__c];
-        Book_Category__c category = [SELECT Name FROM Book_Category__c WHERE Id = :book.Category__c];
-        Book_Category__c subCategory = [SELECT Name FROM Book_Category__c WHERE Id = :book.Sub_Category__c];
-
-        String imageUrl = getBookImage(bookId);
-
-        return new BookWrapper(book, imageUrl, author.Name, publisher.Name, category.Name, subCategory.Name);
     }
 
-    private static String getBookImage(Id bookId) {
-        List<ContentDocumentLink> docLinks = [
-            SELECT ContentDocumentId 
-            FROM ContentDocumentLink 
-            WHERE LinkedEntityId = :bookId 
-            LIMIT 1
+    for (Book__c book : books) {
+        String imageUrl = getBookImage(book.Id);
+        bookWrappers.add(new BookWrapper(book, imageUrl, '', '', '', ''));
+    }
+
+    return bookWrappers;
+}
+
+@AuraEnabled(cacheable=true)
+public static BookWrapper getBookDetails(Id bookId) {
+    if (bookId == null) {
+        throw new AuraHandledException('Invalid book ID');
+    }
+
+    Book__c book = [
+        SELECT Id, Name, Description__c, Price__c, Average_Rating__c, No_of_Reviews__c, Publisher__c, Author__c, Category__c, Sub_Category__c 
+        FROM Book__c 
+        WHERE Id = :bookId 
+        LIMIT 1
+    ];
+    Author__c author = [SELECT Name FROM Author__c WHERE Id = :book.Author__c];
+    Publisher__c publisher = [SELECT Name FROM Publisher__c WHERE Id = :book.Publisher__c];
+    Book_Category__c category = [SELECT Name FROM Book_Category__c WHERE Id = :book.Category__c];
+    Book_Category__c subCategory = [SELECT Name FROM Book_Category__c WHERE Id = :book.Sub_Category__c];
+
+    String imageUrl = getBookImage(bookId);
+
+    return new BookWrapper(book, imageUrl, author.Name, publisher.Name, category.Name, subCategory.Name);
+}
+
+private static String getBookImage(Id bookId) {
+    List<ContentDocumentLink> docLinks = [
+        SELECT ContentDocumentId 
+        FROM ContentDocumentLink 
+        WHERE LinkedEntityId = :bookId 
+        LIMIT 1
+    ];
+
+    if (!docLinks.isEmpty()) {
+        List<ContentVersion> contentVersions = [
+            SELECT Id 
+            FROM ContentVersion 
+            WHERE ContentDocumentId = :docLinks[0].ContentDocumentId 
+            AND IsLatest = true LIMIT 1
         ];
 
-        if (!docLinks.isEmpty()) {
-            List<ContentVersion> contentVersions = [
-                SELECT Id 
-                FROM ContentVersion 
-                WHERE ContentDocumentId = :docLinks[0].ContentDocumentId 
-                AND IsLatest = true LIMIT 1
-            ];
-
-            if (!contentVersions.isEmpty()) {
-                return 'https://tmc-f6-dev-ed.develop.lightning.force.com/sfc/servlet.shepherd/version/download/' + contentVersions[0].Id;
-            }
-        }
-
-        return null;
-    }
-
-    @AuraEnabled(cacheable=true)
-    public static List<Review__c> getBookReviews(Id bookId) {
-        if (bookId == null) {
-            throw new AuraHandledException('Invalid book ID');
-        }
-
-        List<Review__c> allReviews = [
-            SELECT Id, Rating__c, Review_Text__c, Review_Date__c, CreatedBy.Name 
-            FROM Review__c 
-            WHERE Book__c = :bookId
-            ORDER BY Review_Date__c DESC
-            LIMIT 50
-        ];
-
-        List<Review__c> nonEmptyReviews = new List<Review__c>();
-        for (Review__c review : allReviews) {
-            if (String.isNotBlank(review.Review_Text__c)) {
-                nonEmptyReviews.add(review);
-            }
-
-            if (nonEmptyReviews.size() == 10) {  
-                break;
-            }
-        }
-
-        return nonEmptyReviews;
-    }
-
-    @AuraEnabled
-    public static void submitReview(Id bookId, Decimal rating, String reviewText) {
-        if (bookId == null || rating == null || reviewText == null || reviewText.trim() == '') {
-            throw new AuraHandledException('All fields are required');
-        }
-
-        Review__c newReview = new Review__c(
-            Book__c = bookId,
-            Rating__c = rating,
-            Review_Text__c = reviewText,
-            Review_Date__c = Date.today()
-        );
-
-        insert newReview;
-    }
-
-    
-
-
-    @AuraEnabled
-    public static String addToWishlist(Id bookId) {
-        return 'Book with ID ' + bookId + ' has been added to the wishlist';
-    }
-
-    public class BookWrapper {
-        @AuraEnabled public Book__c book { get; set; }
-        @AuraEnabled public String imageUrl { get; set; }
-        @AuraEnabled public String author { get; set; }
-        @AuraEnabled public String publisher { get; set; }
-        @AuraEnabled public String category { get; set; }
-        @AuraEnabled public String subCategory { get; set; }
-
-        public BookWrapper(Book__c book, String imageUrl, String author, String publisher, String category, String subCategory) {
-            this.book = book;
-            this.imageUrl = imageUrl;
-            this.author = author;
-            this.publisher = publisher;
-            this.category = category;
-            this.subCategory = subCategory;
+        if (!contentVersions.isEmpty()) {
+            return 'https://tmc-f6-dev-ed.develop.lightning.force.com/sfc/servlet.shepherd/version/download/' + contentVersions[0].Id;
         }
     }
+
+    return null;
+}
+
+@AuraEnabled(cacheable=true)
+public static List<Review__c> getBookReviews(Id bookId) {
+    if (bookId == null) {
+        throw new AuraHandledException('Invalid book ID');
+    }
+
+    List<Review__c> allReviews = [
+        SELECT Id, Rating__c, Review_Text__c, Review_Date__c, CreatedBy.Name 
+        FROM Review__c 
+        WHERE Book__c = :bookId
+        ORDER BY Review_Date__c DESC
+        LIMIT 50
+    ];
+
+    List<Review__c> nonEmptyReviews = new List<Review__c>();
+    for (Review__c review : allReviews) {
+        if (String.isNotBlank(review.Review_Text__c)) {
+            nonEmptyReviews.add(review);
+        }
+
+        if (nonEmptyReviews.size() == 10) {  
+            break;
+        }
+    }
+
+    return nonEmptyReviews;
+}
+
+@AuraEnabled
+public static void submitReview(Id bookId, Decimal rating, String reviewText) {
+    if (bookId == null || rating == null || reviewText == null || reviewText.trim() == '') {
+        throw new AuraHandledException('All fields are required');
+    }
+
+    Review__c newReview = new Review__c(
+        Book__c = bookId,
+        Rating__c = rating,
+        Review_Text__c = reviewText,
+        Review_Date__c = Date.today()
+    );
+
+    insert newReview;
+}
+
+public class BookWrapper {
+    @AuraEnabled public Book__c book { get; set; }
+    @AuraEnabled public String imageUrl { get; set; }
+    @AuraEnabled public String author { get; set; }
+    @AuraEnabled public String publisher { get; set; }
+    @AuraEnabled public String category { get; set; }
+    @AuraEnabled public String subCategory { get; set; }
+
+    public BookWrapper(Book__c book, String imageUrl, String author, String publisher, String category, String subCategory) {
+        this.book = book;
+        this.imageUrl = imageUrl;
+        this.author = author;
+        this.publisher = publisher;
+        this.category = category;
+        this.subCategory = subCategory;
+    }
+}
 }

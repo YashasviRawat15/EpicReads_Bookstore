@@ -2,7 +2,7 @@ public with sharing class CartController {
     @AuraEnabled
     public static String addToCart(Id bookId, Integer quantity) {
 
-        try {
+       
             system.debug('cart details -->' + bookId +' '+ quantity);
             // Get the current user's active shopping cart
             List<Shopping_Cart__c> carts = [
@@ -54,9 +54,7 @@ public with sharing class CartController {
             }
 
             return 'Book added to cart successfully.';
-        } catch (Exception e) {
-            throw new AuraHandledException(e.getMessage());
-        }
+        
         
     }
 
@@ -137,6 +135,28 @@ public with sharing class CartController {
         }
         return totalPrice;
     } 
+
+
+    @AuraEnabled
+public static String removeItemFromCart(Id cartItemId) {
+    try {
+        Cart_Item__c item = [SELECT Id, Quantity__c FROM Cart_Item__c WHERE Id = :cartItemId LIMIT 1];
+        
+        if (item.Quantity__c > 1) {
+            // Reduce quantity by 1
+            item.Quantity__c -= 1;
+            update item;
+            return 'Quantity reduced by 1.';
+        } else {
+            // Delete item from cart
+            delete item;
+            return 'Item removed from cart.';
+        }
+    } catch (Exception e) {
+        throw new AuraHandledException('Error removing item: ' + e.getMessage());
+    }
+}
+
 
 
 }

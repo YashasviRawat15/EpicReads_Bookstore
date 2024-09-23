@@ -9,9 +9,24 @@
 .cart-summary {
     display: flex;
     justify-content: space-between;
-    margin-top: 1rem;
+    margin: 1rem;
+
 }
 
 .slds-table {
     width: 100%;
+}
+
+.close-button{
+    position: absolute;
+    right: 1rem;
+}
+
+.cancel-button{
+    margin-right: 1rem;
+}
+
+.empty-cart{
+    padding: 1rem;
+    font-size: larger;
 }

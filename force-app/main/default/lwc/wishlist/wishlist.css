@@ -30,3 +30,8 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     line-height: 1.5rem;
 }
+
+.empty-wishlist{
+    padding: 1rem;
+    font-size: larger;
+}

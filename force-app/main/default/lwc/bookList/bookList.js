@@ -3,6 +3,7 @@ import getBooks from '@salesforce/apex/BookController.getBooks';
 import addToCart from '@salesforce/apex/CartController.addToCart';
 import getBooksByGenre from '@salesforce/apex/BookController.getBooksByGenre';
 import getBooksByLanguage from '@salesforce/apex/BookController.getBooksByLanguage';
+import addToWishlist from '@salesforce/apex/WishlistController.addToWishlist';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class BookList extends LightningElement {
@@ -122,22 +123,15 @@ export default class BookList extends LightningElement {
     }
 
     handleAddToWishlist(event) {
-        const { bookId } = event.detail;
-
-        addToWishlist({ bookId })
+        const { bookId, contactId, accountId } = event.detail;
+        console.log('Add to wishlist' + bookId+' '+contactId+ ' '+accountId);
+        // Call the Apex method to add the book to the wishlist
+        addToWishlist({ bookId: bookId, contactId: contactId, accountId: accountId })
             .then(result => {
-                this.dispatchEvent(new ShowToastEvent({
-                    title: 'Success',
-                    message: result,
-                    variant: 'success',
-                }));
+                this.showToast('Success', result, 'success');
             })
             .catch(error => {
-                this.dispatchEvent(new ShowToastEvent({
-                    title: 'Error adding to wishlist',
-                    message: error.body.message,
-                    variant: 'error',
-                }));
+                this.showToast('Error', error, 'error');
             });
     }
 
@@ -153,5 +147,14 @@ export default class BookList extends LightningElement {
 
     get isBookDetailVisible() {
         return this.showBookDetail;
+    }
+
+    showToast(title, message, variant) {
+        const event = new ShowToastEvent({
+            title,
+            message,
+            variant,
+        });
+        this.dispatchEvent(event);
     }
 }

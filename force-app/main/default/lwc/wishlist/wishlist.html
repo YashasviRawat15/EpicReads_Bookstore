@@ -1,34 +1,39 @@
 <template>
-    <lightning-card>
-    <div class="wishlist-container">
-        <template if:true={wishlistItems.length}>
-            <div class="slds-grid slds-wrap">
-                <template for:each={wishlistItems} for:item="item">
-                    <div key={item.id} class="slds-col slds-size_1-of-2 slds-p-around_small">
-                        <div class="slds-card">
-                            <lightning-layout>
-                                <lightning-layout-item>
-                            <img src={item.imageUrl} alt={item.title} class="book-image" if:true={item.imageUrl}/>
-                                </lightning-layout-item>
-                                <lightning-layout-item>
-                            <div class="slds-card__body">
-                                <h3 class="slds-text-heading_small heading">{item.title}</h3>
-                                <p>By: {item.author}</p>
-                                <p>Publisher: {item.publisher}</p>
-                                <p class="price">₹{item.price}</p>
-                                <button class="slds-button slds-button_brand" data-id={item.id} onclick={handleAddToCart}>Add to Cart</button>
-                                <button class="slds-button slds-button_destructive" data-id={item.id} onclick={handleRemove}>Remove</button>
+    <lightning-card title="Dream Reads" icon-name="custom:custom1">
+        <div class="wishlist-container">
+            <template if:true={wishlistItems.length}>
+                <div class="slds-grid slds-wrap">
+                    <template for:each={wishlistItems} for:item="item">
+                        <div key={item.id} class="slds-col slds-size_1-of-2 slds-p-around_small">
+                            <div class="slds-card">
+                                <lightning-layout>
+                                    <lightning-layout-item>
+                                        <img src={item.imageUrl} alt={item.title} class="book-image" if:true={item.imageUrl}/>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item>
+                                        <div class="slds-card__body">
+                                            <h3 class="slds-text-heading_small heading">{item.title}</h3>
+                                            <p>By: {item.author}</p>
+                                            <p>Publisher: {item.publisher}</p>
+                                            <p class="price">₹{item.price}</p>
+                                            <!-- Pass the bookId to the button using data attributes -->
+                                            <button class="slds-button slds-button_brand" data-id={item.id} data-book-id={item.bookId} onclick={handleAddToCart}>Add to Cart</button>
+                                            <button class="slds-button slds-button_destructive" data-id={item.id} onclick={handleRemove}>Remove</button>
+                                        </div>
+                                    </lightning-layout-item>
+                                </lightning-layout>
                             </div>
-                        </lightning-layout-item>
-                        </lightning-layout>
                         </div>
-                    </div>
-                </template>
-            </div>
-        </template>
-        <template if:true={error}>
-            <p>{error}</p>
-        </template>
-    </div>
-</lightning-card>
+                    </template>
+                </div>
+            </template>
+            <template if:false={wishlistItems.length}>
+                <p class="empty-wishlist">
+                    No items in wishlist.</p>
+            </template>
+            <template if:true={error}>
+                <p>{error}</p>
+            </template>
+        </div>
+    </lightning-card>
 </template>

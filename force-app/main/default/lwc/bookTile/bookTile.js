@@ -1,4 +1,5 @@
 import { LightningElement, api } from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class BookTile extends LightningElement {
     @api bookImageUrl;  
@@ -7,6 +8,8 @@ export default class BookTile extends LightningElement {
     @api avgRating;
     @api reviewCount;
     @api bookId;
+    @api contactId;
+    @api accountId;
 
     quantity = 1;
 
@@ -46,10 +49,17 @@ export default class BookTile extends LightningElement {
 
     handleWishlist() {
         const addToWishlistEvent = new CustomEvent('addtowishlist', {
-            detail: { bookId: this.bookId }
+            detail: {
+                bookId: this.bookId,
+                contactId: '003NS00000Dj76r',
+                accountId:'001NS00000WkMKr'
+            }
         });
+
+        // Dispatch the event to the parent component
         this.dispatchEvent(addToWishlistEvent);
     }
+    
 
     calculateStars() {
         if (this.avgRating >= 1) {
@@ -68,4 +78,14 @@ export default class BookTile extends LightningElement {
             this.star5 = true;
         }
     }
+
+    showToast(title, message, variant) {
+        const event = new ShowToastEvent({
+            title,
+            message,
+            variant,
+        });
+        this.dispatchEvent(event);
+    }
 }
+
