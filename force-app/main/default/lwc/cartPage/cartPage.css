@@ -1,0 +1,17 @@
+.slds-modal__container {
+    width: 50%;
+}
+
+.slds-modal__content {
+    padding: 1rem;
+}
+
+.cart-summary {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.slds-table {
+    width: 100%;
+}

@@ -1,0 +1,54 @@
+<template>
+    <lightning-card title="Your Shopping Cart" icon-name="custom:custom63">
+        <template if:true={cartItems.length}>
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>
+                    <tr>
+                        <th>Book Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={cartItems} for:item="cartItem">
+                        <tr key={cartItem.Id}>
+                            <td>{cartItem.Book__r.Name}</td>
+                            <td>{cartItem.Quantity__c}</td>
+                            <td>₹{cartItem.Book__r.Price__c}</td>
+                            <td>₹{cartItem.Total_Price__c}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            <div class="cart-summary">
+                <h3>Total Price: ₹{totalPrice}</h3>
+                <lightning-button label="Checkout" onclick={handleCheckout}></lightning-button>
+            </div>
+        </template>
+        <template if:false={cartItems.length}>
+            <p>Your cart is empty.</p>
+        </template>
+    </lightning-card>
+
+    <!-- Modal for Order Receipt -->
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close" alternative-text="Close"
+                        onclick={closeModal}></lightning-button-icon>
+                    <h2 class="slds-text-heading_medium">Order Confirmation</h2>
+                </header>
+                <div class="slds-modal__content">
+                    <p>Total Order Amount: ₹{totalPrice}</p>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Cancel" onclick={closeModal}></lightning-button>
+                    <lightning-button label="Confirm Order" onclick={confirmOrder}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

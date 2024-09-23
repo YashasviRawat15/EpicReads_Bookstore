@@ -1,5 +1,6 @@
 import { LightningElement, wire, track } from 'lwc';
 import getBooks from '@salesforce/apex/BookController.getBooks';
+import addToCart from '@salesforce/apex/CartController.addToCart';
 import getBooksByGenre from '@salesforce/apex/BookController.getBooksByGenre';
 import getBooksByLanguage from '@salesforce/apex/BookController.getBooksByLanguage';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
@@ -99,8 +100,11 @@ export default class BookList extends LightningElement {
 
     handleAddToCart(event) {
         const { bookId, quantity } = event.detail;
+         
+        console.log('Event detail --> ' + bookId );
+        console.log('Event detail --> ' + quantity );
 
-        addToCart({ bookId, quantity })
+        addToCart({ bookId: bookId, quantity: quantity})
             .then(result => {
                 this.dispatchEvent(new ShowToastEvent({
                     title: 'Success',

@@ -1,0 +1,11 @@
+<template>
+    <lightning-card>
+        <img src={logoUrl} class="company-logo" alt="Company Logo" />
+        <h2 class="title">Login</h2>
+
+        <lightning-input label="Email" type="email" data-id="email" value={email} onchange={handleChange}></lightning-input>
+        <lightning-input label="Password" type="password" data-id="password" value={password} onchange={handleChange}></lightning-input>
+
+        <lightning-button label="Login" onclick={handleLogin} class="login-button"></lightning-button>
+    </lightning-card>
+</template>
