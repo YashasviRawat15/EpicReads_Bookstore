@@ -53,12 +53,11 @@ export default class CartPage extends LightningElement {
         .then(result => {
             this.showToast('Order Success', result, 'success');
             this.closeModal();
-            
-            return refreshApex(this.wiredCartItems);
+            location.reload();
         })
         .catch(error => {
             console.log('error in order' + error.body);
-            this.showToast('Error placing order', error.body.message, 'error');
+            this.showToast('Error placing order', error, 'error');
         });
     }
 

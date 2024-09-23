@@ -93,6 +93,7 @@ public with sharing class CartController {
         // Create a new empty shopping cart
         Shopping_Cart__c newCart = new Shopping_Cart__c(
             Account__c = accountId,
+            Contact__c = contactId,
             Cart_Status__c = 'Active',
             Cart_Total__c = 0
         );
