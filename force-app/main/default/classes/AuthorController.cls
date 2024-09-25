@@ -7,9 +7,11 @@ public with sharing class AuthorController {
 
         for (Author__c author : authors) {
             String imageUrl = getAuthorImage(author.Id);
-            authorWrappers.add(new AuthorWrapper(author, imageUrl));
+            system.debug('Image in apex --> ' + imageUrl);
+            authorWrappers.add(new AuthorWrapper(author, getAuthorImage(author.Id)));
         }
-
+        system.debug('author Wrapper --> '+ authorWrappers);
+        system.debug('author image url  --> '+ authors[0]);
         return authorWrappers;
     }
 
@@ -21,6 +23,7 @@ public with sharing class AuthorController {
         
         Author__c author = [SELECT Id, Name, Biography__C, Nationality__c FROM Author__c WHERE Id = :authorId LIMIT 1];
         String imageUrl = getAuthorImage(authorId);
+        system.debug('Image in apex --> ' + imageUrl);
 
         return new AuthorWrapper(author, imageUrl);
     }
@@ -39,7 +42,7 @@ public with sharing class AuthorController {
             ];
 
             if (!contentVersions.isEmpty()) {
-                return 'https://tmc-f6-dev-ed.develop.my.salesforce.com/sfc/servlet.shepherd/version/download/' + contentVersions[0].Id;
+                return 'https://tmc-f6-dev-ed.develop.my.site.com/sfc/servlet.shepherd/version/download/' + contentVersions[0].Id;
             }
         }
         return null;

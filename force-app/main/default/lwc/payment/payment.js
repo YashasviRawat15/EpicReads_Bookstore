@@ -1,3 +1,6 @@
+
+
+
 import { LightningElement, api,  track } from 'lwc';
 import getContactDetails from '@salesforce/apex/AccountController.getContactDetails';
 import checkout from '@salesforce/apex/CartController.checkout';
@@ -36,7 +39,7 @@ export default class Payment extends LightningElement {
 
     // Fetch Contact Details from Apex
     loadContactDetails() {
-        getContactDetails({ contactId: this.contactId })
+        getContactDetails()
             .then(contact => {
                 // Populate the contact fields
                 this.fullName = contact.FirstName + ' ' + contact.LastName;

@@ -1,10 +1,13 @@
 
 public with sharing class OrderController {
 
+    public static User currentUser = [SELECT Contact.AccountId FROM User WHERE Id = :UserInfo.getUserId() LIMIT 1];
+    public static Id contactId = currentUser.ContactId;
+    public static Id accountId = currentUser.Contact.AccountId;
 
 
     @AuraEnabled(cacheable=true)
-    public static List<Order__c> getOrders(Id contactId) {
+    public static List<Order__c> getOrders() {
         return [SELECT Id, Name, Order_Date__c, Status__c, Total_Amount__c, Shopping_Cart__c 
                 FROM Order__c 
                 WHERE Contact__c = :contactId  ORDER BY Order_Date__c DESC] ;
@@ -20,7 +23,7 @@ public with sharing class OrderController {
 
 
 @AuraEnabled
-public static String createOrderWithPayment(String accountId, String contactId, Decimal amount) {
+public static String createOrderWithPayment( Decimal amount) {
     
         // Query the active shopping cart for the user
         List<Shopping_Cart__c> carts = [

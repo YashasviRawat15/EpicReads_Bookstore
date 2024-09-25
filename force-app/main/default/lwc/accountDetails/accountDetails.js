@@ -101,7 +101,7 @@ export default class AccountDetails extends LightningElement {
             mailingCountry: this.mailingCountry
         };
 
-        createNewContact({ contactData: newContact, accountId: '001NS00000WkMKr' }) //Hardcoded as of now 
+        createNewContact({ contactData: newContact }) //Hardcoded as of now 
             .then(() => {
                 this.dispatchEvent(
                     new ShowToastEvent({

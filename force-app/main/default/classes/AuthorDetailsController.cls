@@ -44,7 +44,7 @@ public with sharing class AuthorDetailsController {
                 ];
     
                 if (!contentVersions.isEmpty()) {
-                    return 'https://tmc-f6-dev-ed.develop.my.salesforce.com/sfc/servlet.shepherd/version/download/' + contentVersions[0].Id;
+                    return 'https://tmc-f6-dev-ed.develop.my.site.com//sfc/servlet.shepherd/version/download/' + contentVersions[0].Id;
                     //return '/servlet/servlet.FileDownload?file={'+ contentVersions[0].Id +'}';
                 }
             }

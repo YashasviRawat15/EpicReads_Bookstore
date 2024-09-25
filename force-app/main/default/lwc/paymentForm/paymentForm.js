@@ -117,7 +117,7 @@ export default class PaymentForm extends LightningElement {
     
         // Validation: Expiration date must be in the future
         const currentYear = new Date().getFullYear();
-        const currentMonth = new Date().getMonth() + 1; // JavaScript months are 0-based
+        const currentMonth = new Date().getMonth() + 1; 
     
         if (this.expYear < currentYear || (this.expYear == currentYear && this.expMonth < currentMonth)) {
             this.showToast('Error', 'Expiration date must be in the future.', 'error');

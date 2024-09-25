@@ -51,6 +51,7 @@ export default class BookList extends LightningElement {
     getAllBooks() {
         getBooks()
             .then(data => {
+                console.log('Book data --> ' + JSON.stringify(data));
                 this.books = data.map(book => ({
                     ...book,
                     imageUrl: book.imageUrl

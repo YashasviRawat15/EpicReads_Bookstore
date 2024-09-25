@@ -1,32 +1,39 @@
 public with sharing class CartController {
+
+    public static User currentUser = [SELECT Contact.AccountId FROM User WHERE Id = :UserInfo.getUserId() LIMIT 1];
+    public static Id contactId = currentUser.ContactId;
+    public static Id accountId = currentUser.Contact.AccountId;
     @AuraEnabled
     public static String addToCart(Id bookId, Integer quantity) {
 
        
+
+        system.debug('contactId--> '+contactId );
+        system.debug('accountId--> '+accountId );
             system.debug('cart details -->' + bookId +' '+ quantity);
             // Get the current user's active shopping cart
-            List<Shopping_Cart__c> carts = [
+            Shopping_Cart__c cart = [
                 SELECT Id 
                 FROM Shopping_Cart__c 
                 WHERE Cart_Status__c = 'Active' 
-                AND Account__c = '001NS00000WkMKr'
-                AND Contact__c = '003NS00000Dj76r'
+                AND Account__c = :accountId
+                AND Contact__c = :contactId
                 LIMIT 1
             ];
 
-            Shopping_Cart__c cart;
-            //if (carts.isEmpty()) {
-                // Create a new shopping cart if one does not exist
-              /*  cart = new Shopping_Cart__c(
-                    Cart_Status__c = 'Active',
-                    Account__c = '001NS00000WkMKr',
-                    Contact__c = '003NS00000Dj76r',
-                    Cart_Total__c = 0
-                );
-                insert cart;*/
-           // } else {
-                cart = carts[0];
-           // }
+        //     Shopping_Cart__c cart;
+        //     if (carts.isEmpty()) {
+        //         // Create a new shopping cart if one does not exist
+        //         cart = new Shopping_Cart__c(
+        //             Cart_Status__c = 'Active',
+        //             Account__c = accountId,
+        //             Contact__c = contactId,
+        //             Cart_Total__c = 0
+        //         );
+        //         insert cart;
+        //    } else {
+        //        cart = carts[0];
+        //    }
 
             // Check if the book is already in the cart
             List<Cart_Item__c> existingItems = [
@@ -59,11 +66,11 @@ public with sharing class CartController {
     }
 
     @AuraEnabled
-    public static String checkout(Id accountId, Id contactId) {
+    public static String checkout() {
         List<Shopping_Cart__c> carts = [
             SELECT Id, Cart_Total__c 
             FROM Shopping_Cart__c 
-            WHERE Account__c = '001NS00000WkMKr' 
+            WHERE Account__c = :accountId
             AND Cart_Status__c = 'Active' 
             LIMIT 1
         ];
@@ -103,7 +110,7 @@ public with sharing class CartController {
     public static List<Cart_Item__c> getCartItems() {
         // Retrieve the current user's active shopping cart
         List<Shopping_Cart__c> carts = [SELECT Id FROM Shopping_Cart__c 
-                                        WHERE Account__c = '001NS00000WkMKr' AND Contact__c = '003NS00000Dj76r'
+                                        WHERE Account__c = :accountId AND Contact__c = :contactId
                                         AND Cart_Status__c = 'Active' LIMIT 1];
 
         if (!carts.isEmpty()) {
@@ -119,7 +126,7 @@ public with sharing class CartController {
     public static Decimal getCartTotalPrice() {
         // Retrieve the current user's active shopping cart
         List<Shopping_Cart__c> carts = [SELECT Id FROM Shopping_Cart__c 
-                                        WHERE Account__c = '001NS00000WkMKr' AND Contact__c = '003NS00000Dj76r'
+                                        WHERE Account__c = :accountId AND Contact__c = :contactId
                                         AND Cart_Status__c = 'Active' LIMIT 1];
 
         Decimal totalPrice = 0;

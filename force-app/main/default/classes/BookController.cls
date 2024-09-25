@@ -8,6 +8,7 @@ public static List<BookWrapper> getBooks() {
 
     for (Book__c book : books) {
         String imageUrl = getBookImage(book.Id);
+        system.debug('book image url--> '+book.Name+'-->'+imageUrl);
         bookWrappers.add(new BookWrapper(book, imageUrl, '', '', '', ''));
     }
 
@@ -96,7 +97,7 @@ public static BookWrapper getBookDetails(Id bookId) {
     return new BookWrapper(book, imageUrl, author.Name, publisher.Name, category.Name, subCategory.Name);
 }
 
-private static String getBookImage(Id bookId) {
+public static String getBookImage(Id bookId) {
     List<ContentDocumentLink> docLinks = [
         SELECT ContentDocumentId 
         FROM ContentDocumentLink 
@@ -113,12 +114,85 @@ private static String getBookImage(Id bookId) {
         ];
 
         if (!contentVersions.isEmpty()) {
-            return 'https://tmc-f6-dev-ed.develop.lightning.force.com/sfc/servlet.shepherd/version/download/' + contentVersions[0].Id;
+           // String baseUrl = URL.getOrgDomainUrl().toExternalForm();
+            //return baseUrl + '/sfc/servlet.shepherd/version/download/' + contentVersions[0].Id;
+            return 'https://tmc-f6-dev-ed.develop.my.site.com/sfc/servlet.shepherd/version/download/' + contentVersions[0].Id;
+           //return 'https://tmc-f6-dev-ed.develop.my.site.com/sfc/servlet.shepherd/document/download/' + docLinks[0].ContentDocumentId;
+
+
         }
     }
 
     return null;
 }
+
+
+// public static Map<Id, String> getBookImages(List<Id> bookIds) {
+//     Map<Id, String> bookImageLinks = new Map<Id, String>();
+//     List<ContentDistribution> contentDistributions = new List<ContentDistribution>();
+
+//     // Step 1: Query ContentDocumentLinks for all books
+//     List<ContentDocumentLink> docLinks = [
+//         SELECT ContentDocumentId, LinkedEntityId
+//         FROM ContentDocumentLink 
+//         WHERE LinkedEntityId IN :bookIds
+//     ];
+
+//     if (!docLinks.isEmpty()) {
+//         // Step 2: Query ContentVersions for the linked documents
+//         List<ContentVersion> contentVersions = [
+//             SELECT Id, Title, ContentDocumentId 
+//             FROM ContentVersion 
+//             WHERE ContentDocumentId IN :docLinks 
+//             AND IsLatest = true
+//         ];
+
+//         // Step 3: Create ContentDistribution records for all the queried files
+//         for (ContentVersion cv : contentVersions) {
+//             ContentDistribution contentDist = new ContentDistribution(
+//                 Name = cv.Title,
+//                 ContentVersionId = cv.Id
+//             );
+//             contentDistributions.add(contentDist);
+//         }
+
+//         // Step 4: Insert all ContentDistribution records at once
+//         if (!contentDistributions.isEmpty()) {
+//             insert contentDistributions;
+
+//             // Map the distribution URL back to the respective book records
+//             for (ContentDistribution cd : contentDistributions) {
+//                 // You need to relate back to the LinkedEntityId
+//                 Id linkedEntityId = docLinks.stream()
+//                     .filter(link -> link.ContentDocumentId == contentVersions.get(0).ContentDocumentId)
+//                     .map(link -> link.LinkedEntityId)
+//                     .findFirst()
+//                     .orElse(null);
+                
+//                 if (linkedEntityId != null) {
+//                     bookImageLinks.put(linkedEntityId, cd.DistributionPublicUrl);
+//                 }
+//             }
+//         }
+//     }
+
+//     return bookImageLinks; // Return public links mapped to book IDs
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @AuraEnabled(cacheable=true)
 public static List<Review__c> getBookReviews(Id bookId) {

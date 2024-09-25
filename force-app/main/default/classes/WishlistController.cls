@@ -1,7 +1,10 @@
 public with sharing class WishlistController {
+    public static User currentUser = [SELECT Contact.AccountId FROM User WHERE Id = :UserInfo.getUserId() LIMIT 1];
+    public static Id contactId = currentUser.ContactId;
+    public static Id accountId = currentUser.Contact.AccountId;
 
     @AuraEnabled
-    public static String addToWishlist(Id bookId, Id contactId, Id accountId) {
+    public static String addToWishlist(Id bookId) {
         try {
             // Query for an existing Wishlist record for the user and contact
             List<Wishlist__c> wishlists = [
@@ -93,7 +96,7 @@ public with sharing class WishlistController {
 
             for (ContentDocumentLink link : contentLinks) {
                 String contentVersionId = link.ContentDocument.LatestPublishedVersionId;
-                bookImages.put(link.LinkedEntityId, 'https://tmc-f6-dev-ed.develop.my.salesforce.com/sfc/servlet.shepherd/version/download/' + contentVersionId);
+                bookImages.put(link.LinkedEntityId, 'https://tmc-f6-dev-ed.develop.my.site.com/sfc/servlet.shepherd/version/download/' + contentVersionId);
             }
         }
 

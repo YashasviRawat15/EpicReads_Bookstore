@@ -12,7 +12,7 @@ export default class OrderTile extends LightningElement {
     orderImage = staticResourceURL;
 
     // Fetch the orders using the wire service
-    @wire(getOrders, { contactId: '003NS00000Dj76r' })  //'$recordId'
+    @wire(getOrders)  //'$recordId'
     wiredOrders({ error, data }) {
         if (data) {
             this.orders = data;  // Assign fetched data to orders

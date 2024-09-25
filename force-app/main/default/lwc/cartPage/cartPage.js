@@ -10,8 +10,8 @@ import { refreshApex } from '@salesforce/apex';
 export default class CartPage extends NavigationMixin (LightningElement) {
     @track cartItems = [];
     @track totalPrice = 0;
-    @track accountId = '001NS00000WkMKr'; 
-    @track contactId = '003NS00000Dj76r'; 
+   // @track accountId = '001NS00000WkMKr'; 
+    //@track contactId = '003NS00000Dj76r'; 
     @track isOrderModalOpen = false;  // Order confirmation modal
     wiredCartItems; 
     wiredCartTotal
