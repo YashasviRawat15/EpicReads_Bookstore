@@ -72,7 +72,7 @@ public static String createOrderWithPayment(String accountId, String contactId, 
             cart.Cart_Status__c = 'Converted';
             update cart; 
         
-system.debug('Amount --> '+ amount);
+        system.debug('Amount --> '+ amount);
 
         Order__c order = new Order__c();
         order.Account__c = accountId;

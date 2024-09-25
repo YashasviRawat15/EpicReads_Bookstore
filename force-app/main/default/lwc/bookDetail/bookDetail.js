@@ -3,6 +3,7 @@ import getBookDetails from '@salesforce/apex/BookController.getBookDetails';
 import getBookReviews from '@salesforce/apex/BookController.getBookReviews';
 import submitReview from '@salesforce/apex/BookController.submitReview';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { refreshApex } from '@salesforce/apex';
 
 export default class BookDetail extends LightningElement {
     @api recordId;
@@ -84,11 +85,13 @@ export default class BookDetail extends LightningElement {
     handleReviewSubmit() {
         submitReview({ bookId: this.recordId, rating: this.newRating, reviewText: this.newReviewText })
             .then(() => {
+                
                 this.dispatchEvent(new ShowToastEvent({
                     title: 'Success',
                     message: 'Your review has been submitted.',
                     variant: 'success',
                 }));
+                //this.template.querySelector('.review-form-section').reset();
                 return refreshApex(this.wiredReviews);
             })
             .catch(error => {

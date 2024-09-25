@@ -107,11 +107,13 @@ export default class BookList extends LightningElement {
 
         addToCart({ bookId: bookId, quantity: quantity})
             .then(result => {
+                
                 this.dispatchEvent(new ShowToastEvent({
                     title: 'Success',
                     message: result,
                     variant: 'success',
                 }));
+                location.reload();
             })
             .catch(error => {
                 this.dispatchEvent(new ShowToastEvent({
@@ -129,6 +131,7 @@ export default class BookList extends LightningElement {
         addToWishlist({ bookId: bookId, contactId: contactId, accountId: accountId })
             .then(result => {
                 this.showToast('Success', result, 'success');
+                location.reload();
             })
             .catch(error => {
                 this.showToast('Error', error, 'error');

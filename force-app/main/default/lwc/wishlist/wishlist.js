@@ -13,9 +13,12 @@ export default class Wishlist extends LightningElement {
     @wire(getWishlistItems)
     wiredWishlistItems(result) {
         this.wiredWishlistItemsResult = result;
+        
         const { data, error } = result;
         if (data) {
+            //this.refreshData();
             this.wishlistItems = data;
+            this.refreshData();
         } else if (error) {
             this.showToast('Error', error.body.message, 'error');
         }
@@ -52,8 +55,8 @@ export default class Wishlist extends LightningElement {
                     message: result,
                     variant: 'success',
                 }));
-    
-                // Optionally, remove the item from wishlist after adding to cart
+                location.reload();
+                
                 return removeFromWishlist({ wishlistItemId: itemId });
             })
             .then(() => {

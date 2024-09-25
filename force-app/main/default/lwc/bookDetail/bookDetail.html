@@ -28,6 +28,16 @@
 <br/><br/>  
 
         <div class="reviews-section">
+
+            <!-- Add Review Form -->
+        <div class="review-form-section">
+            <h2>Write a Review</h2>
+            <lightning-input label="Rating" type="number" min="1" max="5" value={newRating} onchange={handleRatingChange}></lightning-input>
+            <lightning-textarea label="Your Review" value={newReviewText} onchange={handleReviewTextChange} class="slds-m-bottom_small"></lightning-textarea>
+            <lightning-button label="Submit Review" onclick={handleReviewSubmit}></lightning-button>
+        </div> 
+
+        <div class="customer-reviews">
             <h2>Customer Reviews</h2>
             <template if:true={reviews}>
                 <template for:each={reviews} for:item="review">
@@ -42,15 +52,10 @@
             <template if:false={reviews}>
                 <p>No reviews available for this book.</p>
             </template>
+            </div>
         </div>
 
-        <!-- Add Review Form -->
-        <div class="review-form-section">
-            <h2>Write a Review</h2>
-            <lightning-input label="Rating" type="number" min="1" max="5" value={newRating} onchange={handleRatingChange}></lightning-input>
-            <lightning-textarea label="Your Review" value={newReviewText} onchange={handleReviewTextChange}></lightning-textarea>
-            <lightning-button label="Submit Review" onclick={handleReviewSubmit}></lightning-button>
-        </div>  
+         
     </template>
     <template if:true={error}>
         <p>{error}</p>

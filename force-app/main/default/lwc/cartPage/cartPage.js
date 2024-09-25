@@ -16,12 +16,20 @@ export default class CartPage extends NavigationMixin (LightningElement) {
     wiredCartItems; 
     wiredCartTotal
 
+
+    //location.reload();
+
+
     @wire(getCartItems)
 wiredCartItems(value) {
+    
     this.wiredCartItems = value; // Capture the response for refreshApex
     const { data, error } = value;
     if (data) {
+        
         this.cartItems = data;
+
+       // this.refreshData();
     } else if (error) {
         console.error('Error retrieving cart items: ', error);
     }
