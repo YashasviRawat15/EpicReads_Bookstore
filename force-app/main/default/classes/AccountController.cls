@@ -42,7 +42,7 @@ public with sharing class AccountController {
                 WHERE Id = :contactId
                 LIMIT 1
             ];
-
+            system.debug('Conatct Details --> '+ contactDetails);
             // Return the contact record
             return contactDetails;
        

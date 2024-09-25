@@ -1,96 +1,121 @@
+
 public with sharing class OrderController {
 
-    // Method to create an order and process payment using Stripe
+
+
+    @AuraEnabled(cacheable=true)
+    public static List<Order__c> getOrders(Id contactId) {
+        return [SELECT Id, Name, Order_Date__c, Status__c, Total_Amount__c, Shopping_Cart__c 
+                FROM Order__c 
+                WHERE Contact__c = :contactId  ORDER BY Order_Date__c DESC] ;
+    }
+
     @AuraEnabled
-    public static String createOrderWithPayment(String contactId, Decimal amount, String paymentMethodId) {
-        try {
-            // Step 1: Update contact details
-            Contact contact = [SELECT Id, Name, Email FROM Contact WHERE Id = :contactId LIMIT 1];
+    public static List<Cart_Item__c> getCartItemsByShoppingCart(Id shoppingCartId) {
+        return [SELECT Id, Book__r.Name, Quantity__c,Unit_Price__c, Total_Price__c 
+                FROM Cart_Item__c 
+                WHERE Shopping_Cart__c = :shoppingCartId];
+    }
+
+
+
+@AuraEnabled
+public static String createOrderWithPayment(String accountId, String contactId, Decimal amount) {
+    
+        // Query the active shopping cart for the user
+        List<Shopping_Cart__c> carts = [
+            SELECT Id, Cart_Total__c 
+            FROM Shopping_Cart__c 
+            WHERE Account__c = :accountId 
+            AND Cart_Status__c = 'Active' 
+            LIMIT 1
+        ];
+
+        
+
+        Shopping_Cart__c cart = carts[0];
+        Contact contact = [SELECT Id, Name, Email FROM Contact WHERE Id = :contactId LIMIT 1];
+
+        // Stripe Payment Processing
+        String stripeSecretKey = 'sk_test_51Q0FTzJi20YIDM4QnJRMxT4lBn1nw29AXLOcmpaRX6wrnLUouW2vNSxXkfG9ik6VlX9u3UA5dPbilJquaS41SaeQ00kb9PzRjt'; // Replace with your Stripe secret key
+        String endpoint = 'https://api.stripe.com/v1/charges';
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint(endpoint);
+        req.setMethod('POST');
+        req.setHeader('Authorization', 'Bearer ' + stripeSecretKey);
+        req.setHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        // Prepare the request body
+        String body = 'amount=' + String.valueOf(amount)  + 
+                        '&currency=USD&source=tok_visa';
+
+        req.setBody(body);
+
+        // Send the request to Stripe API
+        Http http = new Http();
+        HttpResponse res = http.send(req);
+
+        
+
+        // Parse the response from Stripe
+        Map<String, Object> responseMap = (Map<String, Object>) JSON.deserializeUntyped(res.getBody());
+        String paymentStatus = (String) responseMap.get('status');
+        String returnMessage = '';
+
+
+        if (res.getStatusCode() == 200) {
+            //System.debug('Payment successfully done!!: ' + res.getBody());
+            System.debug(res.getStatusCode());
+            returnMessage = 'success';
+            // Create the order if payment is successful
+
+            cart.Cart_Status__c = 'Converted';
+            update cart; 
+        
+system.debug('Amount --> '+ amount);
+
+        Order__c order = new Order__c();
+        order.Account__c = accountId;
+        order.Contact__c = contactId;
+        order.Total_Amount__c = amount;
+        order.Shopping_Cart__c = cart.Id;
+        order.Status__c = 'Pending';
+        order.Order_Date__c = system.now();
+        insert order;
+
+        System.debug('Order Id -- ' + order.id);
+        Payment__c newPayment = new Payment__c();
+        newPayment.Account__c = accountId; // Example accountId
+        newPayment.Contact__c = contactId; // Example contactId
+        newPayment.Payment_Method__c = 'Credit Card';
+        newPayment.Payment_Status__c = 'Completed';
+        newPayment.OrderC__c = order.Id;
+
+    insert newPayment;
+
+    Shopping_Cart__c newCart = new Shopping_Cart__c(
+            Account__c = accountId,
+            Contact__c = contactId,
+            Cart_Status__c = 'Active',
+            Cart_Total__c = 0
+        );
+        insert newCart;
+
+
             
-            // Assuming contact details may be updated elsewhere in the LWC
-            update contact;
-
-            // Step 2: Create a new order associated with the contact
-            Order__c newOrder = new Order__c(
-                Contact__c = contactId, 
-                Total_Amount__c = amount, 
-                Status__c = 'Pending'
-            );
-            insert newOrder;
-
-            // Step 3: Process Stripe payment by making an HTTP callout
-            String paymentStatus = processStripePayment(paymentMethodId, amount);
-
-            // Step 4: If the payment is successful, update the order and create a payment record
-            if (paymentStatus == 'succeeded') {
-                // Update order status
-                newOrder.Status__c = 'Completed';
-                update newOrder;
-
-                // Create a Payment record
-                Payment__c paymentRecord = new Payment__c(
-                    Payment_Method__c = 'Credit Card',
-                    Payment_Status__c = 'Completed',
-                    Order__c = newOrder.Id
-                    
-                );
-                insert paymentRecord;
-
-                return 'Order and payment successfully created!';
-            } else {
-                // Handle payment failure
-                newOrder.Status__c = 'Failed';
-                update newOrder;
-
-                throw new AuraHandledException('Payment failed. Please try again.');
-            }
-
-        } catch (Exception e) {
-            // Handle any exceptions and provide a meaningful message to the LWC
-            throw new AuraHandledException('Error processing payment: ' + e.getMessage());
+            
+        } else {
+            System.debug('Error occured: ' + res.getBody());
+            System.debug(res.getStatusCode());
+            returnMessage = 'error';
         }
-    }
 
-    // Method to process Stripe payments via HTTP callout
-    public static String processStripePayment(String paymentMethodId, Decimal amount) {
-        try {
-            // Create an HTTP request to Stripe's Payment Intent API
-            HttpRequest req = new HttpRequest();
-            req.setEndpoint('https://api.stripe.com/v1/charges');
-            req.setMethod('POST');
-            req.setHeader('Authorization', 'sk_test_51Q0FTzJi20YIDM4QnJRMxT4lBn1nw29AXLOcmpaRX6wrnLUouW2vNSxXkfG9ik6VlX9u3UA5dPbilJquaS41SaeQ00kb9PzRjt'); 
-            req.setHeader('Content-Type', 'application/x-www-form-urlencoded');
+        return returnMessage;
 
-            // Stripe expects the amount to be in cents (i.e., multiply by 100 for INR)
-            Integer amountInCents = Integer.valueOf(amount * 100);
+        
+    
+        
+    
+}
 
-            // Set request body
-            req.setBody('amount=' + String.valueOf(amountInCents) + '&currency=inr&payment_method=' + paymentMethodId + '&confirm=true');
-
-            // Send the HTTP request
-            Http http = new Http();
-            HttpResponse res = http.send(req);
-
-            // Check the response from Stripe
-            if (res.getStatusCode() == 200) {
-                // Parse the response to extract payment status
-                Map<String, Object> responseMap = (Map<String, Object>) JSON.deserializeUntyped(res.getBody());
-
-                // If the payment status is 'succeeded', return 'succeeded'
-                if (responseMap.get('status') == 'succeeded') {
-                    return 'succeeded';
-                } else {
-                    return 'failed'; // Handle other statuses like 'requires_action', 'requires_payment_method', etc.
-                }
-            } else {
-                // If the status code is not 200, treat the payment as failed
-                return 'failed';
-            }
-
-        } catch (Exception e) {
-            // Log the error for debugging purposes and return 'failed'
-            System.debug('Stripe Payment Error: ' + e.getMessage());
-            return 'failed';
-        }
-    }
 }

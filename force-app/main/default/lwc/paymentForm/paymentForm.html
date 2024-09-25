@@ -25,7 +25,6 @@
 
             <div class="payment-section">
                 <h3>Payment Details</h3>
-                <!-- Payment fields as before -->
                 <div class="card-logos">
                     <img src={PayPal} alt="PayPal" />
                     <img src={MasterCard} alt="Mastercard" />
@@ -33,27 +32,28 @@
                     <img src={AmericanExpress} alt="American Express" />
                 </div>
                 <div class="form-group">
-                    <lightning-input label="Name On Card" type="text" id="nameOnCard" onchange={handleInputChange}></lightning-input>
+                    <lightning-input label="Name On Card" name="nameOnCard" type="text" onchange={handleInputChange} required></lightning-input>
                 </div>
                 <div class="form-group">
-                    <lightning-input label="Credit Card Number" type="text" id="creditCardNumber" onchange={handleInputChange}></lightning-input>
+                    <lightning-input label="Credit Card Number" name="creditCardNumber" type="text" onchange={handleInputChange} required></lightning-input>
                 </div>
                 <div class="form-group">
-                    <lightning-combobox label="Exp Month" options={monthOptions} onchange={handleInputChange} id="expMonth"></lightning-combobox>
+                    <lightning-combobox label="Exp Month" name="expMonth" options={monthOptions} onchange={handleInputChange} required></lightning-combobox>
                 </div>
                 <div class="form-group">
-                    <lightning-input label="Exp Year" type="text" id="expYear" onchange={handleInputChange}></lightning-input>
+                    <lightning-input label="Exp Year" name="expYear" type="text" onchange={handleInputChange} required></lightning-input>
                 </div>
                 <div class="form-group">
-                    <lightning-input label="CVV" type="text" id="cvv" onchange={handleInputChange}></lightning-input>
+                    <lightning-input label="CVV" name="cvv" type="password" onchange={handleInputChange} required></lightning-input>
                 </div>
             </div>
+            
         </div>
 
 
         <div class="submit-container">
             <h3>Total Amount: ₹{totalAmount}    </h3>
-            <button class="checkout-btn">Proceed To Checkout</button>
+            <lightning-button label="Proceed to Checkout" variant="brand" onclick={handlePayment}></lightning-button>
         </div>
     </div>
 </template>

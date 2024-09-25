@@ -1,0 +1,40 @@
+.slds-tile {
+    padding: 1rem;
+    border: 1px solid #d8dde6;
+    background-color: white;
+    margin: 1rem;
+    border-radius: 0.5rem;
+}
+
+.orders{
+    display: flex;
+    justify-content: space-between;
+}
+
+.order-icon {
+    width: 30%;
+}
+
+.order-details{
+    width: 65%;
+}
+
+.order-image {
+    height: 120px;
+    width: 80px;
+    margin-bottom: 1rem;
+}
+
+h2{
+    margin-top: 2.3rem;
+    font-weight: bold;
+    font-size: medium;
+}
+
+.detail-button{
+    margin-top: 0.5rem;
+}
+
+.total-amount{
+    margin-top: 0.5rem;
+}

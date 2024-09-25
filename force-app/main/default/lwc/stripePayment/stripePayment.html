@@ -1,0 +1,16 @@
+<template>
+    <lightning-card title="Payment">
+        <div class="slds-m-around_medium">
+            <lightning-input label="Name on Card" value={cardName} onchange={handleInputChange} data-id="name"></lightning-input>
+
+            <div class="slds-m-top_medium">
+                <label>Card Information</label>
+                <div id="card-element" class="slds-box"></div>
+            </div>
+
+            <div id="card-errors" class="slds-text-color_error slds-m-top_small"></div>
+
+            <lightning-button label="Submit Payment" onclick={handleSubmit} class="slds-m-top_medium"></lightning-button>
+        </div>
+    </lightning-card>
+</template>

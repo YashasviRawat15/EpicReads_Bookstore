@@ -1,0 +1,80 @@
+<template>
+    <lightning-card>
+        <template if:true={orders}>
+            <template if:true={orders.length}>
+                <div class="slds-grid slds-wrap">
+                    <template for:each={orders} for:item="order">
+                        <div key={order.Id} class="slds-col slds-size_1-of-3">
+                            <lightning-tile>
+                                <div class="orders">
+                                <div class="order-icon">
+                                <lightning-icon icon-name="standard:orders" alternative-text="order" ></lightning-icon>
+                              <!--  <img src={orderImage} class="order-image"/>  -->
+                              <h2>{order.Name}</h2>
+                            </div>
+                                
+                                <div class="order-details">
+                                <p><b>Placed on</b>:  {order.Order_Date__c}</p>
+                                <p><b>Status</b>:  {order.Status__c}</p>
+                                <p><b>Amount</b>:  ₹{order.Total_Amount__c}</p>
+                                <div class="detail-button">
+                                <lightning-button label="View Details" onclick={handleViewDetails} data-id={order.Shopping_Cart__c} ></lightning-button>
+                            </div>
+                        </div>
+                        </div>
+                            </lightning-tile>
+                        </div>
+                    </template>
+                </div>
+            </template>
+            <template if:false={orders.length}>
+                <p>No orders found for this contact.</p>
+            </template>
+        </template>
+        <template if:true={error}>
+            <p>{error}</p>
+        </template>
+    </lightning-card>
+
+    <!-- Modal for Cart Item Details -->
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium">Order Details</h2>
+                    <button class="slds-button slds-button_icon slds-modal__close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                        <thead>
+                            <tr>
+                                <th scope="col">Item</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Unit Price</th>
+                                <th scope="col">Total Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={cartItems} for:item="item">
+                                <tr key={item.Id}>
+                                    <td>{item.Book__r.Name}</td>
+                                    <td>{item.Quantity__c}</td>
+                                    <td>₹{item.Unit_Price__c}</td>
+                                    <td>₹{item.Total_Price__c}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                    <p class="total-amount"><b>Total Order Value: ₹{totalOrderValue}</b></p>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Close" onclick={closeModal}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>
