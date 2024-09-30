@@ -117,9 +117,10 @@ export default class BookList extends LightningElement {
                 location.reload();
             })
             .catch(error => {
+                console.log('Error adding to cart: '+error.body.fieldErrors.Quantity__c[0].message);
                 this.dispatchEvent(new ShowToastEvent({
                     title: 'Error adding to cart',
-                    message: error.body.message,
+                    message: error.body.fieldErrors.Quantity__c[0].message,
                     variant: 'error',
                 }));
             });

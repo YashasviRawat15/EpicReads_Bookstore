@@ -98,12 +98,15 @@ public static BookWrapper getBookDetails(Id bookId) {
 }
 
 public static String getBookImage(Id bookId) {
+
+    system.debug('book id for image --> '+bookId);
     List<ContentDocumentLink> docLinks = [
         SELECT ContentDocumentId 
         FROM ContentDocumentLink 
         WHERE LinkedEntityId = :bookId 
         LIMIT 1
     ];
+    system.debug('ContentDocumentLink --> '+docLinks);
 
     if (!docLinks.isEmpty()) {
         List<ContentVersion> contentVersions = [
@@ -113,17 +116,20 @@ public static String getBookImage(Id bookId) {
             AND IsLatest = true LIMIT 1
         ];
 
+        system.debug('ContentVersion --> '+contentVersions);
+
         if (!contentVersions.isEmpty()) {
            // String baseUrl = URL.getOrgDomainUrl().toExternalForm();
             //return baseUrl + '/sfc/servlet.shepherd/version/download/' + contentVersions[0].Id;
             return 'https://tmc-f6-dev-ed.develop.my.site.com/sfc/servlet.shepherd/version/download/' + contentVersions[0].Id;
-           //return 'https://tmc-f6-dev-ed.develop.my.site.com/sfc/servlet.shepherd/document/download/' + docLinks[0].ContentDocumentId;
+          //return 'https://tmc-f6-dev-ed.develop.my.site.com/sfc/servlet.shepherd/document/download/' + docLinks[0].ContentDocumentId;
 
 
         }
     }
 
-    return null;
+    return 'https://tmc-f6-dev-ed.develop.my.site.com/resource/DefaultBookCover';
+    //return null;
 }
 
 

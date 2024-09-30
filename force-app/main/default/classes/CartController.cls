@@ -1,6 +1,6 @@
 public with sharing class CartController {
 
-    public static User currentUser = [SELECT Contact.AccountId FROM User WHERE Id = :UserInfo.getUserId() LIMIT 1];
+    public static User currentUser = [SELECT ContactId,Contact.AccountId FROM User WHERE Id = :UserInfo.getUserId() LIMIT 1];
     public static Id contactId = currentUser.ContactId;
     public static Id accountId = currentUser.Contact.AccountId;
     @AuraEnabled
