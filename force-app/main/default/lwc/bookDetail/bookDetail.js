@@ -92,13 +92,13 @@ export default class BookDetail extends LightningElement {
                     variant: 'success',
                 }));
                 //this.template.querySelector('.review-form-section').reset();
-                return refreshApex(this.wiredReviews);
+                return Promise.all([refreshApex(this.wiredReviews)]);
             })
             .catch(error => {
                 this.dispatchEvent(new ShowToastEvent({
                     title: 'Error',
                     message: error.body.message,
-                    variant: 'error',
+                    variant: 'error', 
                 }));
             });
     }

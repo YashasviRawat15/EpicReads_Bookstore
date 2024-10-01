@@ -1,0 +1,211 @@
+<apex:page controller="RegisterController" showHeader="false" sidebar="false">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-section {
+            flex: 1;
+            background-color: #F4EEE2;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            width: 60%;
+            padding-top: 10rem;
+            padding-bottom: 10rem;
+        }
+
+        .image-section img {
+            max-width: 70%;
+        }
+
+        .text-section {
+            flex: 1;
+            background-color: #ffffff;
+            padding: 60px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+            justify-content: center;
+            align-items: center;
+            width: 50%;
+            margin: auto;
+            padding-top: 4.46rem;
+            padding-bottom: 4.46rem;
+        }
+
+        .logo img {
+            display: block;
+            margin: 0 auto 20px;
+            width: 7rem;
+        }
+
+        h2 {
+            text-align: center;
+            width: 50%;
+            margin: auto;
+            padding-bottom: 3rem;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            width: 70%;
+            margin: auto;
+        }
+
+        label {
+            display: block;
+            margin-top: 1rem;
+            margin-bottom: 10px;
+            color: #808080;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        .form-group input {
+            font-size: 16px;
+        }
+
+        .form-group .form-button {
+        	background: none;
+            width: 100%;
+            background-color: #818589;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .form-group .form-button:hover {
+            opacity: 0.8;
+        }
+
+        .links {
+            color: #808080;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+        }
+
+        .links a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #808080;
+        }
+
+        .form-group-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            width: 70%;
+            margin: auto;
+        }
+
+        .form-group-row .form-group {
+            width: 48%;
+        }
+
+        @media only screen and (max-width: 768px) {
+            .form-group-row {
+                flex-direction: column;
+            }
+
+            .form-group-row .form-group {
+                width: 100%;
+            }
+        }
+    </style>
+
+    <apex:form >
+        <div class="main-container">
+            <div class="image-section">
+                <apex:image url="{!URLFOR($Resource.LibraryForLogin)}" />
+            </div>
+
+            <div class="text-section">
+                <div class="logo">
+                    <apex:image url="{!URLFOR($Resource.CompanyLogo)}" />
+                </div>
+
+                <apex:pagemessages id="message"></apex:pagemessages>
+
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <apex:inputText value="{!name}" id="name" />
+                </div>
+
+                <!-- Email and Phone -->
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <apex:inputText value="{!email}" id="email" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <apex:inputText value="{!phone}" id="phone" />
+                    </div>
+                </div>
+
+                <!-- Street -->
+                <div class="form-group">
+                    <label for="street">Street</label>
+                    <apex:inputText value="{!street}" id="street" />
+                </div>
+
+                <!-- City and State -->
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <apex:inputText value="{!city}" id="city" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="state">State</label>
+                        <apex:inputText value="{!state}" id="state" />
+                    </div>
+                </div>
+
+                <!-- Country and Pincode -->
+                <div class="form-group-row">
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <apex:inputText value="{!country}" id="country" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pincode">Pincode</label>
+                        <apex:inputText value="{!pincode}" id="pincode" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <apex:commandButton value="Register" action="{!register}" styleClass="form-button" />
+                </div>
+
+                <div class="links">
+                    <apex:outputLink value="/apex/LoginPage">Already have an account? Login</apex:outputLink>
+                </div>
+            </div>
+        </div>
+    </apex:form>
+</apex:page>

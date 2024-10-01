@@ -82,7 +82,7 @@ public static String createOrderWithPayment( Decimal amount) {
         order.Contact__c = contactId;
         order.Total_Amount__c = amount;
         order.Shopping_Cart__c = cart.Id;
-        order.Status__c = 'Pending';
+        order.Status__c = 'Confirmed';
         order.Order_Date__c = system.now();
         insert order;
 

@@ -18,10 +18,15 @@ export default class Wishlist extends LightningElement {
         if (data) {
             //this.refreshData();
             this.wishlistItems = data;
-            this.refreshData();
+           // this.refreshData();
         } else if (error) {
             this.showToast('Error', error.body.message, 'error');
         }
+    }
+
+    connectedCallback(){
+        //location.reload();
+
     }
 
     handleRemove(event) {
@@ -31,7 +36,7 @@ export default class Wishlist extends LightningElement {
             .then(result => {
                 this.showToast('Success', result, 'success');
                 // Refresh wishlist items after removal
-                return refreshApex(this.wiredWishlistItemsResult);
+                return Promise.all(refreshApex(this.wiredWishlistItemsResult));
             })
             .catch(error => {
                 this.showToast('Error', error.body.message, 'error');
