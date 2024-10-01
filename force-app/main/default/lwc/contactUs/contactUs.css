@@ -1,0 +1,62 @@
+.contact-us-container {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    background-color: #f0f4f8;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    max-width: 100%;
+}
+
+.contact-us-card {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.contact-us-content {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #333;
+}
+
+.intro-text {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    color: #444;
+}
+
+.contact-info {
+    margin-bottom: 15px;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-left: 4px solid #4a90e2;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.contact-info a {
+    color: #4a90e2;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.contact-info a:hover {
+    text-decoration: underline;
+}
+
+.support-hours {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #666;
+}
+
+p {
+    margin-bottom: 10px;
+}
+
+strong {
+    color: #333;
+}

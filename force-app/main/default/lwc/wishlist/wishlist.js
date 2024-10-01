@@ -1,4 +1,4 @@
-import { LightningElement, track, wire, api } from 'lwc';
+import { LightningElement, track, wire } from 'lwc';
 import getWishlistItems from '@salesforce/apex/WishlistController.getWishlistItems';
 import removeFromWishlist from '@salesforce/apex/WishlistController.removeFromWishlist';
 import addToCart from '@salesforce/apex/CartController.addToCart';
@@ -6,53 +6,82 @@ import { refreshApex } from '@salesforce/apex';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class Wishlist extends LightningElement {
-    
     @track wishlistItems = [];
+    @track currentPage = 1;  // Track the current page
+    itemsPerPage = 6;  // 6 records per page (3 rows * 2 columns)
+    //totalPages = 0;  // Total number of pages
     wiredWishlistItemsResult;
 
+
+    // Get the total number of pages based on the total orders and orders per page
+    get totalPages() {
+        return Math.ceil(this.wishlistItems.length / this.itemsPerPage);
+    }
+
+    // Check if current page is the first page
+    get isFirstPage() {
+        return this.currentPage === 1;
+    }
+
+    // Check if current page is the last page
+    get isLastPage() {
+        return this.currentPage >= this.totalPages;
+    }
+
+    // Fetch the wishlist items using wire service
     @wire(getWishlistItems)
     wiredWishlistItems(result) {
         this.wiredWishlistItemsResult = result;
-        
         const { data, error } = result;
         if (data) {
-            //this.refreshData();
             this.wishlistItems = data;
-           // this.refreshData();
+            this.totalPages = Math.ceil(this.wishlistItems.length / this.itemsPerPage);  // Calculate total pages
         } else if (error) {
             this.showToast('Error', error.body.message, 'error');
         }
     }
 
-    connectedCallback(){
-        //location.reload();
-
+    // Compute paginated items based on the current page
+    get paginatedWishlistItems() {
+        const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+        const endIndex = startIndex + this.itemsPerPage;
+        return this.wishlistItems.slice(startIndex, endIndex);  // Return only the items for the current page
     }
 
-    handleRemove(event) {
-        const itemId = event.currentTarget.dataset.id;  // Retrieve item ID from button
+    // Handle page navigation
+    nextPage() {
+        if (this.currentPage < this.totalPages) {
+            this.currentPage += 1;
+        }
+    }
 
+    previousPage() {
+        if (this.currentPage > 1) {
+            this.currentPage -= 1;
+        }
+    }
+
+    // Handle item removal
+    handleRemove(event) {
+        const itemId = event.currentTarget.dataset.id;
         removeFromWishlist({ wishlistItemId: itemId })
             .then(result => {
                 this.showToast('Success', result, 'success');
-                // Refresh wishlist items after removal
-                return Promise.all(refreshApex(this.wiredWishlistItemsResult));
+                return refreshApex(this.wiredWishlistItemsResult);
             })
             .catch(error => {
                 this.showToast('Error', error.body.message, 'error');
             });
     }
 
+    // Handle add to cart
     handleAddToCart(event) {
-        const itemId = event.currentTarget.dataset.id;  // Retrieve the wishlist item ID
-        const bookId = event.currentTarget.dataset.bookId;  // Retrieve the book ID
-        console.log('Book ID:', bookId);  // Debugging to check the bookId
-    
+        const itemId = event.currentTarget.dataset.id;
+        const bookId = event.currentTarget.dataset.bookId;
         if (!bookId) {
             this.showToast('Error', 'Book ID is not defined.', 'error');
             return;
         }
-    
         addToCart({ bookId: bookId, quantity: 1 })
             .then(result => {
                 this.dispatchEvent(new ShowToastEvent({
@@ -60,8 +89,6 @@ export default class Wishlist extends LightningElement {
                     message: result,
                     variant: 'success',
                 }));
-                location.reload();
-                
                 return removeFromWishlist({ wishlistItemId: itemId });
             })
             .then(() => {
@@ -75,10 +102,8 @@ export default class Wishlist extends LightningElement {
                 }));
             });
     }
-    
 
-
-
+    // Helper function to show toast messages
     showToast(title, message, variant) {
         const event = new ShowToastEvent({
             title,
@@ -87,12 +112,4 @@ export default class Wishlist extends LightningElement {
         });
         this.dispatchEvent(event);
     }
-
-
-   
-
-    /*handleRemove(event) {
-        const itemId = event.target.dataset.id;
-        this.wishlistItems = this.wishlistItems.filter(item => item.id !== itemId);
-    }*/
 }

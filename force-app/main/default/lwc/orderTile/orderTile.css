@@ -38,3 +38,13 @@ h2{
 .total-amount{
     margin-top: 0.5rem;
 }
+
+.previous-button{
+    margin-left: 0;
+    
+}
+
+.next-button{
+    margin-left: 1rem;
+    
+}

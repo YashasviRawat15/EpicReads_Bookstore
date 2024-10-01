@@ -29,4 +29,13 @@
     transform: translateX(0); 
 }
 
+.previous-button{
+    margin-left: 0.6rem;
+    
+}
+
+.next-button{
+    margin-left: 1rem;
+    
+}
 

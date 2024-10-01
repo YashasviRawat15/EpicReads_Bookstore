@@ -4,7 +4,7 @@ public with sharing class BookController {
 public static List<BookWrapper> getBooks() {
     List<BookWrapper> bookWrappers = new List<BookWrapper>();
 
-    List<Book__c> books = [SELECT Id, Name, Price__c, Average_Rating__c, No_of_Reviews__c FROM Book__c LIMIT 50];
+    List<Book__c> books = [SELECT Id, Name, Price__c, Average_Rating__c, No_of_Reviews__c FROM Book__c WHERE Active__c = true];
 
     for (Book__c book : books) {
         String imageUrl = getBookImage(book.Id);
@@ -37,7 +37,7 @@ public static List<BookWrapper> getBooksByGenre(String genre) {
     List<Book__c> books = [
         SELECT Id, Name, Price__c, Average_Rating__c, No_of_Reviews__c 
         FROM Book__c 
-        WHERE Category__r.Name = :genreName LIMIT 50
+        WHERE Category__r.Name = :genreName AND Active__c = true
     ];
 
     for (Book__c book : books) {
@@ -57,13 +57,13 @@ public static List<BookWrapper> getBooksByLanguage(String language) {
         books = [
             SELECT Id, Name, Price__c, Average_Rating__c, No_of_Reviews__c 
             FROM Book__c 
-            WHERE Language__c = :language LIMIT 50
+            WHERE Language__c = :language AND Active__c = true
         ];
     } else {
         books = [
             SELECT Id, Name, Price__c, Average_Rating__c, No_of_Reviews__c 
             FROM Book__c 
-            WHERE Language__c != 'Hindi' AND Language__c != 'English'
+            WHERE Language__c != 'Hindi' AND Language__c != 'English' AND Active__c = true
         ];
     }
 

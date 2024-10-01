@@ -2,9 +2,9 @@
     <lightning-card>
         <div class="container">
             <div class="Author-list">
-                <template if:true={authors}>
+                <template if:true={paginatedAuthors}>
                     <div class="slds-grid slds-wrap">
-                        <template for:each={authors} for:item="author">
+                        <template for:each={paginatedAuthors} for:item="author">
                             <div key={author.author.Id} class="slds-col slds-size_1-of-5 slds-p-around_x-small">
                                 <c-author-tile
                                     author-id={author.author.Id}
@@ -19,6 +19,22 @@
                 <template if:true={error}>
                     <p>{error}</p>
                 </template>
+            </div>
+
+            <!-- Pagination Controls -->
+            <div class="slds-m-around_medium">
+                <lightning-button 
+                    label="Previous" 
+                    onclick={handlePrevious} 
+                    disabled={isFirstPage}
+                    class="previous-button">
+                </lightning-button>
+                <lightning-button 
+                    label="Next" 
+                    onclick={handleNext} 
+                    disabled={isLastPage}
+                    class="next-button">
+                </lightning-button>
             </div>
 
             <!-- Author Details Modal -->

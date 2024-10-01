@@ -4,20 +4,60 @@ import getCartItemsByShoppingCart from '@salesforce/apex/OrderController.getCart
 import staticResourceURL from '@salesforce/resourceUrl/OrderImage';
 
 export default class OrderTile extends LightningElement {
-    @track orders = [];  // Initialize orders as an empty array
-    @track cartItems = [];  // Initialize cart items as an empty array
-    @track totalOrderValue = 0;  // Initialize total order value to 0
+    @track orders = [];
+    @track paginatedOrders = []; // Paginated subset of orders
+    @track currentPage = 1;
+    @track cartItems = [];
+    @track totalOrderValue = 0;
     @track error;
     @track isModalOpen = false;
     orderImage = staticResourceURL;
+    ordersPerPage = 9; // Number of orders to display per page
+
+    // Get the total number of pages based on the total orders and orders per page
+    get totalPages() {
+        return Math.ceil(this.orders.length / this.ordersPerPage);
+    }
+
+    // Check if current page is the first page
+    get isFirstPage() {
+        return this.currentPage === 1;
+    }
+
+    // Check if current page is the last page
+    get isLastPage() {
+        return this.currentPage >= this.totalPages;
+    }
 
     // Fetch the orders using the wire service
-    @wire(getOrders)  //'$recordId'
+    @wire(getOrders)
     wiredOrders({ error, data }) {
         if (data) {
-            this.orders = data;  // Assign fetched data to orders
+            this.orders = data;
+            this.updatePaginatedOrders();
         } else if (error) {
             this.error = error;
+        }
+    }
+
+    // Pagination methods
+    updatePaginatedOrders() {
+        const start = (this.currentPage - 1) * this.ordersPerPage;
+        const end = this.currentPage * this.ordersPerPage;
+        this.paginatedOrders = this.orders.slice(start, end);
+    }
+
+    handleNext() {
+        if (this.currentPage < this.totalPages) {
+            this.currentPage += 1;
+            this.updatePaginatedOrders();
+        }
+    }
+
+    handlePrevious() {
+        if (this.currentPage > 1) {
+            this.currentPage -= 1;
+            this.updatePaginatedOrders();
         }
     }
 

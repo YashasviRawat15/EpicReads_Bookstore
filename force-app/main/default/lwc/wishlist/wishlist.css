@@ -35,3 +35,13 @@
     padding: 1rem;
     font-size: larger;
 }
+
+.previous-button{
+    margin-left: 2rem;
+    
+}
+
+.next-button{
+    margin-left: 1rem;
+    margin-right: 1rem;
+}

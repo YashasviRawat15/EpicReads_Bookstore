@@ -1,39 +1,53 @@
 <template>
     <lightning-card>
-        <template if:true={orders}>
-            <template if:true={orders.length}>
+        <template if:true={paginatedOrders}>
+            <template if:true={paginatedOrders.length}>
                 <div class="slds-grid slds-wrap">
-                    <template for:each={orders} for:item="order">
+                    <template for:each={paginatedOrders} for:item="order">
                         <div key={order.Id} class="slds-col slds-size_1-of-3">
                             <lightning-tile>
                                 <div class="orders">
-                                <div class="order-icon">
-                                <lightning-icon icon-name="standard:orders" alternative-text="order" ></lightning-icon>
-                              <!--  <img src={orderImage} class="order-image"/>  -->
-                              <h2>{order.Name}</h2>
-                            </div>
-                                
-                                <div class="order-details">
-                                <p><b>Placed on</b>:  {order.Order_Date__c}</p>
-                                <p><b>Status</b>:  {order.Status__c}</p>
-                                <p><b>Amount</b>:  ₹{order.Total_Amount__c}</p>
-                                <div class="detail-button">
-                                <lightning-button label="View Details" onclick={handleViewDetails} data-id={order.Shopping_Cart__c} ></lightning-button>
-                            </div>
-                        </div>
-                        </div>
+                                    <div class="order-icon">
+                                        <lightning-icon icon-name="standard:orders" alternative-text="order"></lightning-icon>
+                                        <h2>{order.Name}</h2>
+                                    </div>
+                                    <div class="order-details">
+                                        <p><b>Placed on</b>: {order.Order_Date__c}</p>
+                                        <p><b>Status</b>: {order.Status__c}</p>
+                                        <p><b>Amount</b>: ₹{order.Total_Amount__c}</p>
+                                        <div class="detail-button">
+                                            <lightning-button label="View Details" onclick={handleViewDetails} data-id={order.Shopping_Cart__c}></lightning-button>
+                                        </div>
+                                    </div>
+                                </div>
                             </lightning-tile>
                         </div>
                     </template>
                 </div>
             </template>
-            <template if:false={orders.length}>
+            <template if:false={paginatedOrders.length}>
                 <p>No orders found for this contact.</p>
             </template>
         </template>
         <template if:true={error}>
             <p>{error}</p>
         </template>
+
+        <!-- Pagination Controls -->
+        <div class="slds-m-around_medium">
+            <lightning-button 
+                label="Previous" 
+                onclick={handlePrevious} 
+                disabled={isFirstPage}
+                class="previous-button">
+            </lightning-button>
+            <lightning-button 
+                label="Next" 
+                onclick={handleNext} 
+                disabled={isLastPage}
+                class="next-button">
+            </lightning-button>
+        </div>
     </lightning-card>
 
     <!-- Modal for Cart Item Details -->

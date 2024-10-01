@@ -1,9 +1,9 @@
 <template>
     <lightning-card title="Dream Reads" icon-name="custom:custom1">
         <div class="wishlist-container">
-            <template if:true={wishlistItems.length}>
+            <template if:true={paginatedWishlistItems.length}>
                 <div class="slds-grid slds-wrap">
-                    <template for:each={wishlistItems} for:item="item">
+                    <template for:each={paginatedWishlistItems} for:item="item">
                         <div key={item.id} class="slds-col slds-size_1-of-2 slds-p-around_small">
                             <div class="slds-card">
                                 <lightning-layout>
@@ -16,7 +16,6 @@
                                             <p>By: {item.author}</p>
                                             <p>Publisher: {item.publisher}</p>
                                             <p class="price">₹{item.price}</p>
-                                            <!-- Pass the bookId to the button using data attributes -->
                                             <button class="slds-button slds-button_brand" data-id={item.id} data-book-id={item.bookId} onclick={handleAddToCart}>Add to Cart</button>
                                             <button class="slds-button slds-button_destructive" data-id={item.id} onclick={handleRemove}>Remove</button>
                                         </div>
@@ -27,13 +26,22 @@
                     </template>
                 </div>
             </template>
-            <template if:false={wishlistItems.length}>
+            <template if:false={paginatedWishlistItems.length}>
                 <p class="empty-wishlist">
                     No items in wishlist.<br/><br/><br/><br/><br/></p>
             </template>
             <template if:true={error}>
                 <p>{error}</p>
             </template>
+        </div>
+
+        <!-- Pagination Controls -->
+        <div class="pagination-controls">
+            <lightning-button label="Previous" onclick={previousPage} disabled={isFirstPage} class="previous-button"></lightning-button>
+            
+            <lightning-button label="Next" onclick={nextPage} disabled={isLastPage} class="next-button"></lightning-button>
+
+           <!-- <span>Page {currentPage} of {totalPages}</span>  -->
         </div>
     </lightning-card>
 </template>

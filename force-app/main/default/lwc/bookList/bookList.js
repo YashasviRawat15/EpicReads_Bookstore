@@ -8,10 +8,28 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class BookList extends LightningElement {
     @track books = [];
+    @track paginatedBooks = []; // Paginated subset of books
+    @track currentPage = 1;
     @track selectedBookId;
     @track showBookDetail = false;
     @track detailTopPosition = '0px';
+    booksPerPage = 12; // Number of books to display per page (3 rows of 4 books)
     error;
+
+    // Get the total number of pages based on the total books and books per page
+    get totalPages() {
+        return Math.ceil(this.books.length / this.booksPerPage);
+    }
+
+    // Check if current page is the first page
+    get isFirstPage() {
+        return this.currentPage === 1;
+    }
+
+    // Check if current page is the last page
+    get isLastPage() {
+        return this.currentPage >= this.totalPages;
+    }
 
     get urlParams() {
         const path = window.location.pathname;
@@ -56,6 +74,7 @@ export default class BookList extends LightningElement {
                     ...book,
                     imageUrl: book.imageUrl
                 }));
+                this.updatePaginatedBooks();
             })
             .catch(error => {
                 this.error = error;
@@ -69,6 +88,7 @@ export default class BookList extends LightningElement {
                     ...book,
                     imageUrl: book.imageUrl
                 }));
+                this.updatePaginatedBooks();
             })
             .catch(error => {
                 this.error = error;
@@ -82,6 +102,7 @@ export default class BookList extends LightningElement {
                     ...book,
                     imageUrl: book.imageUrl
                 }));
+                this.updatePaginatedBooks();
             })
             .catch(error => {
                 this.error = error;
@@ -102,13 +123,12 @@ export default class BookList extends LightningElement {
 
     handleAddToCart(event) {
         const { bookId, quantity } = event.detail;
-         
-        console.log('Event detail --> ' + bookId );
-        console.log('Event detail --> ' + quantity );
 
-        addToCart({ bookId: bookId, quantity: quantity})
+        console.log('Event detail --> ' + bookId);
+        console.log('Event detail --> ' + quantity);
+
+        addToCart({ bookId: bookId, quantity: quantity })
             .then(result => {
-                
                 this.dispatchEvent(new ShowToastEvent({
                     title: 'Success',
                     message: result,
@@ -117,7 +137,7 @@ export default class BookList extends LightningElement {
                 location.reload();
             })
             .catch(error => {
-                console.log('Error adding to cart: '+error.body.fieldErrors.Quantity__c[0].message);
+                console.log('Error adding to cart: ' + error.body.fieldErrors.Quantity__c[0].message);
                 this.dispatchEvent(new ShowToastEvent({
                     title: 'Error adding to cart',
                     message: error.body.fieldErrors.Quantity__c[0].message,
@@ -128,8 +148,7 @@ export default class BookList extends LightningElement {
 
     handleAddToWishlist(event) {
         const { bookId, contactId, accountId } = event.detail;
-        console.log('Add to wishlist' + bookId+' '+contactId+ ' '+accountId);
-        // Call the Apex method to add the book to the wishlist
+        console.log('Add to wishlist' + bookId + ' ' + contactId + ' ' + accountId);
         addToWishlist({ bookId: bookId, contactId: contactId, accountId: accountId })
             .then(result => {
                 this.showToast('Success', result, 'success');
@@ -144,6 +163,27 @@ export default class BookList extends LightningElement {
         this.showBookDetail = false;
         this.selectedBookId = null;
         this.template.host.dataset.showBookDetail = false;
+    }
+
+    // Pagination methods
+    updatePaginatedBooks() {
+        const start = (this.currentPage - 1) * this.booksPerPage;
+        const end = this.currentPage * this.booksPerPage;
+        this.paginatedBooks = this.books.slice(start, end);
+    }
+
+    handleNext() {
+        if (this.currentPage < this.totalPages) {
+            this.currentPage += 1;
+            this.updatePaginatedBooks();
+        }
+    }
+
+    handlePrevious() {
+        if (this.currentPage > 1) {
+            this.currentPage -= 1;
+            this.updatePaginatedBooks();
+        }
     }
 
     get isBookListVisible() {
