@@ -1,57 +1,90 @@
-.book-details{
-    padding:6rem;
-    height: 50%;
-    padding-bottom: 0;
+.book-details {
+    padding: 2.5rem; /* Increase padding of the card */
+    
 }
 
-img{
-    height: 27rem;
-    width: 18rem;
-    border: 1px black;
-    
-    margin-top: 0.6rem;
-}
-
-.book-info{
-    margin-top: 1rem;
-    margin-left: 5rem;
-    
-    width: 60%;
+.back-button {
     position: absolute;
-    right: 3rem;
+    top: 1rem;
+    left: 1rem; /* Move back button to the left side */
+   
 }
 
-.book-info p {
-    margin-bottom: 0.5rem;
+.book-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-right: 2rem; /* Increase space between book image and details */
 }
 
-.heading{
-    font-size: large;
-    font-weight: bold;
+.book-img img {
+    width: 100%;
+    max-width: 300px;
+    border: 1px solid black;
+    margin-top: 1rem;
+}
+
+.book-info {
+    margin-top: 2rem;
+    width: 100%;
+    text-align: center;
+    padding: 0 1rem;
+}
+
+.book-title {
+    font-size: 1.5rem; /* Increase font size of book title */
+    font-weight: bold; /* Make the book title bold */
     margin-bottom: 1.5rem;
 }
 
-.cart-button{
-    margin-right: 1.5rem;
+.book-info p {
+    margin-bottom: 0.5rem; /* Increase space between each detail in book details */
+    font-size: 1rem; /* Increase font size */
 }
 
-
-.slds-card {
-    padding: 1rem;
-}
-.review {
-    border-bottom: 1px solid #ccc;
-    padding: 1rem 0;
-}
-.review-form-section {
-    margin-top: 2rem;
+.reviews-section {
+    width: 100%;
+    margin-top: 3rem;
 }
 
 h2{
-    font-size: larger;
+    font-size: 1rem;
 }
 
+.customer-reviews {
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 0 1rem;
+}
 
-.customer-reviews{
-    margin-top: 3rem;;
+.review {
+    margin-bottom: 1.5rem; /* Increase space between each review */
+}
+
+.review-divider {
+    border-top: 1px solid #ccc; /* Line between reviews */
+    margin-top: 1rem;
+}
+
+@media screen and (min-width: 768px) {
+    .book-content {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .book-info {
+        text-align: left;
+        margin-left: 2rem;
+        width: 60%;
+    }
+
+    .reviews-section {
+        margin-top: 3rem;
+        text-align: left;
+    }
+
+    .customer-reviews {
+        margin-top: 2rem;
+    }
 }

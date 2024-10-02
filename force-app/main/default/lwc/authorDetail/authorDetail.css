@@ -1,38 +1,49 @@
-.author-details{
-    padding:3rem;
+.author-details {
+    padding: 3rem;
     padding-bottom: 0;
 }
 
-.modal-body{
-    height: 18rem;
+.modal-body {
+    height: auto; /* Remove fixed height */
+    
+    margin: 0; /* Center the modal content */
+    text-align: left; /* Center-align text */
+    padding-right: 5rem;
 }
 
-img{
-    height: 10rem;
-    width: 10rem;
-    border: 2px black;
-    border-radius: 1rem;
-    margin-top: 0.6rem;
-}
-
-.author-info{
-    margin-top: 0.6rem;
-    margin-left: 5rem;
-    font-size: larger;
-    width: 60%;
-    position: absolute;
-    right: 3rem;
-    height: 15rem;
-    overflow-y: scroll;
-}
-
-.author-info p {
+.author-layout {
+    display: flex;
+    flex-direction: column; /* Default to column for smaller screens */
     
 }
 
-.heading{
-    font-size: xx-large;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
+.author-img img {
+    height: 10rem; /* Set fixed size for image */
+    width: 10rem;
+    border: 2px solid black; /* Add border */
+    border-radius: 1rem; /* Round corners */
+    margin-top: 0.6rem; /* Spacing above image */
 }
 
+.author-info {
+    margin-top: 1rem; /* Spacing above author info */
+    font-size: larger; /* Larger font size */
+}
+
+/* Media query for larger screens */
+@media only screen and (min-width: 768px) {
+    .author-layout {
+        flex-direction: row; /* Switch to row for larger screens */
+        justify-content: space-around; /* Space out the image and info */
+    }
+
+    .author-img {
+        margin-right: 2rem; /* Spacing to the right of the image */
+    }
+
+    .author-info {
+        width: 60%; /* Make author info wider on larger screens */
+        height: auto; /* Remove fixed height */
+        overflow-y: auto; /* Allow scrolling if content overflows */
+    }
+}

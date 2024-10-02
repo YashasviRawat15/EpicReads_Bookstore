@@ -13,17 +13,15 @@
 
                 <!-- Modal/Popup Body -->
                 <div class="slds-modal__content slds-p-around_medium modal-body">
-                    <lightning-layout>
-                        <lightning-layout-item class="author-img">
+                    <div class="author-layout">
+                        <div class="author-img">
                             <img src={author.imageUrl} alt="Author Image" />
-                        </lightning-layout-item>
-                        <lightning-layout-item>
-                            <div class="author-info">
-                                <p><strong>Nationality: </strong> {author.Nationality__c}</p>
-                                <p><strong>About: </strong> {author.Biography__c}</p>
-                            </div>
-                        </lightning-layout-item>
-                    </lightning-layout>
+                        </div>
+                        <div class="author-info">
+                            <p><strong>Nationality: </strong> {author.Nationality__c}</p>
+                            <p><strong>About: </strong> {author.Biography__c}</p>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Modal/Popup Footer -->

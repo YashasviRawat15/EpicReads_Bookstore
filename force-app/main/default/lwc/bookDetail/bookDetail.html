@@ -1,73 +1,63 @@
 <template>
-    <lightning-card >
+    <lightning-card>
         <div class="book-details">
-            <lightning-button-icon icon-name="utility:back" alternative-text="Back" onclick={handleBackToList} class="slds-m-bottom_small"></lightning-button-icon>
-    <template if:true={book}>
-        
-        <lightning-layout>
-            <lightning-layout-item class="book-img">
-                
-                <img src={book.imageUrl} alt="Book Image" />
-            
-            </lightning-layout-item>
-                <lightning-layout-item>
-            <div class="book-info">
-                <h1 class="heading">{book.Name}</h1>
-                <p><strong>Author:</strong> {book.author}</p>
-                <p><strong>Publisher:</strong> {book.publisher}</p>
-                <p><strong>Price:</strong> ₹{book.Price__c}</p>
-                <p><strong>Average Rating:</strong> {book.Average_Rating__c} ({book.No_of_Reviews__c} Reviews)</p>
-                <p><strong>Genre:</strong> {book.category} - {book.subCategory}</p>
-                <p class="book-description"><strong>Description:</strong> {book.Description__c}</p>
-                <lightning-button label="Add to Cart" onclick={handleAddToCart} class="cart-button"></lightning-button>
-                <lightning-button label="Add to Wishlist" onclick={handleWishlist}></lightning-button>
+            <div class="back-button">
+                <lightning-button-icon icon-name="utility:back" alternative-text="Back" onclick={handleBackToList}></lightning-button-icon>
             </div>
-            </lightning-layout-item>
-        </lightning-layout>
 
-<br/><br/>  
-
-        <div class="reviews-section">
-
-            <!-- Add Review Form -->
-        <div class="review-form-section">
-            <h2>Write a Review</h2>
-            <lightning-combobox
-        label="Rating"
-        value={newRating}
-        placeholder="Select a rating"
-        options={ratingOptions}
-        onchange={handleRatingChange}>
-    </lightning-combobox>
-            <lightning-textarea label="Your Review" value={newReviewText} onchange={handleReviewTextChange} class="slds-m-bottom_small"></lightning-textarea>
-            <lightning-button label="Submit Review" onclick={handleReviewSubmit}></lightning-button>
-        </div> 
-
-        <div class="customer-reviews">
-            <h2>Customer Reviews</h2>
-            <template if:true={reviews}>
-                <template for:each={reviews} for:item="review">
-                    <div key={review.Id} class="review">
-                        <p><strong>{review.CreatedBy.Name}:</strong></p>
-                        <p>Rating: {review.Rating__c} / 5</p>
-                        <p>{review.Review_Text__c}</p>
-                        <p><em>Reviewed on {review.Review_Date__c}</em></p>
+            <template if:true={book}>
+                <div class="book-content">
+                    <div class="book-img">
+                        <img src={book.imageUrl} alt="Book Image" />
                     </div>
-                </template>
+                    <div class="book-info">
+                        <h1 class="book-title">{book.Name}</h1>
+                        <p><strong>Author:</strong> {book.author}</p>
+                        <p><strong>Publisher:</strong> {book.publisher}</p>
+                        <p><strong>Price:</strong> ₹{book.Price__c}</p>
+                        <p><strong>Average Rating:</strong> {book.Average_Rating__c} ({book.No_of_Reviews__c} Reviews)</p>
+                        <p><strong>Genre:</strong> {book.category} - {book.subCategory}</p>
+                        <p class="book-description"><strong>Description:</strong> {book.Description__c}</p>
+                        <lightning-button label="Add to Cart" onclick={handleAddToCart} class="cart-button"></lightning-button>
+                        <lightning-button label="Add to Wishlist" onclick={handleWishlist}></lightning-button>
+                    </div>
+                </div>
+
+                <div class="reviews-section">
+                    <h2>Write a Review</h2>
+                    <lightning-combobox
+                        label="Rating"
+                        value={newRating}
+                        placeholder="Select a rating"
+                        options={ratingOptions}
+                        onchange={handleRatingChange}>
+                    </lightning-combobox>
+                    <lightning-textarea label="Your Review" value={newReviewText} onchange={handleReviewTextChange} class="slds-m-bottom_small"></lightning-textarea>
+                    <lightning-button label="Submit Review" onclick={handleReviewSubmit}></lightning-button>
+
+                    <div class="customer-reviews">
+                        <h2>Customer Reviews</h2>
+                        <template if:true={reviews}>
+                            <template for:each={reviews} for:item="review">
+                                <div key={review.Id} class="review">
+                                    <p><strong>{review.CreatedBy.Name}:</strong></p>
+                                    <p>Rating: {review.Rating__c} / 5</p>
+                                    <p>{review.Review_Text__c}</p>
+                                    <p><em>Reviewed on {review.Review_Date__c}</em></p>
+                                    <hr class="review-divider"/>
+                                </div>
+                            </template>
+                        </template>
+                        <template if:false={reviews}>
+                            <p>No reviews available for this book.</p>
+                        </template>
+                    </div>
+                </div>
             </template>
-            <template if:false={reviews}>
-                <p>No reviews available for this book.</p>
+
+            <template if:true={error}>
+                <p>{error}</p>
             </template>
-            </div>
         </div>
-
-         
-    </template>
-    <template if:true={error}>
-        <p>{error}</p>
-    </template>
-
-</div>
-</lightning-card>
+    </lightning-card>
 </template>
-

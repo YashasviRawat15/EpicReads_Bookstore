@@ -1,3 +1,4 @@
+
 .book-tile {
     padding: 1rem;
     border: 1px solid #ddd;
@@ -13,11 +14,13 @@
 
 .book-image {
     margin-bottom: 0.8rem;
-    margin-left: 1rem;
+    margin-left: 0.5rem;
+    
     width: 14.5rem;
     height: 22rem;
     margin-top: 0;
     padding-top: 0;
+    z-index: 0;
 }
 
 .book-title {
@@ -28,7 +31,7 @@
     color: green;
 }
 
-/* Quantity Control Styles */
+
 .quantity-control {
     display: flex;
     align-items: center;
@@ -47,12 +50,12 @@
     margin: 0 10px;
     font-weight: bold;
 }
-
+/*  
 .quantity-label{
-    margin-right: 6rem;
+    margin-right: 10%;
 }
+*/
 
-/* Star Rating Styles */
 .rating {
     display: flex;
     align-items: center;
@@ -63,3 +66,186 @@
     --slds-c-icon-color-foreground-default: gold;
 
 }
+
+@media (max-width: 380px) {
+    .book-tile {
+        width: 100%;
+        
+    }
+
+    .book-image {
+        max-width: 90%;
+        height: auto;
+        margin-right: 2rem;
+    }
+}
+
+
+
+
+
+
+/*
+.book-tile {
+    padding: 1rem;
+    border: 1px solid #ddd;
+    margin: 1rem;
+    font-size: larger;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative; 
+    width: 15rem;
+}
+
+.book-image {
+    width: 100%;
+    height: auto;
+    max-height: 20rem; 
+    margin-bottom: 0.5rem;
+}
+
+.heartIcon {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.book-title {
+    font-weight: bold;
+    font-size: 1rem;
+    margin: 0.5rem 0;
+}
+
+.book-price {
+    color: green;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.4rem;
+}
+
+.quantity-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-label {
+    margin-right: 0.5rem;
+}
+
+.quantity-value {
+    margin: 0 0.5rem;
+    font-weight: bold;
+}
+
+
+.rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.yellow-star {
+    --slds-c-icon-color-foreground-default: gold;
+    font-size: 1.2rem; 
+}
+
+
+lightning-button {
+    margin-top: 1rem;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .book-tile {
+        width: 100%;
+    }
+
+    .book-image {
+        max-width: 100%;
+        height: auto;
+    }
+}
+*/
+
+
+
+
+
+
+/*
+
+.book-tile {
+    padding: 1rem;
+    border: 1px solid #ddd;
+    margin: 1rem;
+    font-size: larger;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.book-image {
+    width: 100%;
+    max-width: 12rem;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+.heartIcon {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.book-title {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.book-price {
+    color: green;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.4rem;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .book-tile {
+        margin: 0.5rem;
+    }
+
+    .book-image {
+        max-width: 10rem;
+    }
+
+    .book-price, .book-title {
+        font-size: 0.9rem;
+    }
+}
+
+
+*/

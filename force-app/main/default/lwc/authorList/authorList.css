@@ -1,7 +1,8 @@
 .container {
     position: relative;
     width: 100%;
-    height: 2   00%;
+    height: 100%;
+    padding-right: 2rem;
 }
 
 .author-list {
@@ -12,30 +13,37 @@
     z-index: 1; 
 }
 
-.author-detail {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%; 
-    height: 100%;
-    transform: translateX(100%); 
-    transition: transform 0.5s ease-in-out;
-    z-index: 2; 
-    background-color: #ffffff;
-    box-shadow: -5px 0 10px rgba(0, 0, 0, 0.1);
+.slds-col {
+    flex-basis: 100%; /* Mobile: Full width for each author */
+    max-width: 100%;
+    padding: 1rem;
 }
 
-:host([data-show-author-detail]) .author-detail {
-    transform: translateX(0); 
+@media screen and (min-width: 600px) {
+    .slds-col {
+        flex-basis: 50%; /* Tablet: 2 authors per row */
+        max-width: 50%;
+    }
 }
 
-.previous-button{
-    margin-left: 0.6rem;
-    
+@media screen and (min-width: 1024px) {
+    .slds-col {
+        flex-basis: 20%; /* Desktop: 5 authors per row */
+        max-width: 20%;
+    }
 }
 
-.next-button{
+.previous-button,
+.next-button {
     margin-left: 1rem;
-    
+    margin-top: 1rem;
 }
 
+@media screen and (max-width: 768px) {
+    .previous-button,
+    .next-button {
+        margin-left: 0;
+        margin-right: 0.5rem;
+        width: 48%;
+    }
+}
