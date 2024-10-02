@@ -1,0 +1,45 @@
+
+
+.slds-p-around_medium {
+    padding: 1rem;
+    padding-top: 0.3rem;
+}
+
+.lightning-input,
+.lightning-textarea,
+.lightning-combobox {
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
+
+.lightning-button{
+    margin-bottom: 2rem;
+}
+
+
+/* Responsive Design */
+@media only screen and (max-width: 768px) {
+    :host {
+        max-width: 90%;
+    }
+
+    lightning-button {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    :host {
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    .slds-p-around_medium {
+        padding: 0.5rem;
+    }
+
+    lightning-button {
+        width: 100%;
+    }
+}

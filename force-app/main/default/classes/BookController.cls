@@ -211,7 +211,7 @@ public static List<Review__c> getBookReviews(Id bookId) {
         FROM Review__c 
         WHERE Book__c = :bookId
         ORDER BY Review_Date__c DESC
-        LIMIT 50
+        LIMIT 8
     ];
 
     List<Review__c> nonEmptyReviews = new List<Review__c>();
@@ -229,7 +229,7 @@ public static List<Review__c> getBookReviews(Id bookId) {
 }
 
 @AuraEnabled
-public static void submitReview(Id bookId, Decimal rating, String reviewText) {
+public static Review__c submitReview(Id bookId, Decimal rating, String reviewText) {
     if (bookId == null || rating == null || reviewText == null || reviewText.trim() == '') {
         throw new AuraHandledException('All fields are required');
     }
@@ -242,6 +242,7 @@ public static void submitReview(Id bookId, Decimal rating, String reviewText) {
     );
 
     insert newReview;
+    return newReview;
 }
 
 public class BookWrapper {

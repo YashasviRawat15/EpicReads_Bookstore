@@ -1,0 +1,34 @@
+<template>
+    <lightning-card title="Customer Support" icon-name="standard:case">
+        <div class="slds-p-around_medium">
+            <lightning-combobox 
+                label="Case Reason"
+                placeholder="Select a Reason"
+                options={caseReasons}
+                value={selectedReason}
+                onchange={handleReasonChange} class="slds-m-bottom_small">
+            </lightning-combobox>
+
+            <lightning-input 
+                label="Email"
+                type="email"
+                value={email}
+                onchange={handleEmailChange} class="slds-m-bottom_small">
+            </lightning-input>
+
+            <lightning-input 
+                label="Subject"
+                value={subject}
+                onchange={handleSubjectChange} class="slds-m-bottom_small">
+            </lightning-input>
+
+            <lightning-textarea 
+                label="Description"
+                value={description}
+                onchange={handleDescriptionChange} class="slds-m-bottom_small">
+            </lightning-textarea>
+
+            <lightning-button label="Submit" variant="brand" onclick={handleSubmit} class="slds-m-bottom_small"></lightning-button>
+        </div>
+    </lightning-card>
+</template>

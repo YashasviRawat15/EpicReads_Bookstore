@@ -32,7 +32,13 @@
             <!-- Add Review Form -->
         <div class="review-form-section">
             <h2>Write a Review</h2>
-            <lightning-input label="Rating" type="number" min="1" max="5" value={newRating} onchange={handleRatingChange}></lightning-input>
+            <lightning-combobox
+        label="Rating"
+        value={newRating}
+        placeholder="Select a rating"
+        options={ratingOptions}
+        onchange={handleRatingChange}>
+    </lightning-combobox>
             <lightning-textarea label="Your Review" value={newReviewText} onchange={handleReviewTextChange} class="slds-m-bottom_small"></lightning-textarea>
             <lightning-button label="Submit Review" onclick={handleReviewSubmit}></lightning-button>
         </div> 

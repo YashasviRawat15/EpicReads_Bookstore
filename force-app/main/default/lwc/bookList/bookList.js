@@ -134,7 +134,7 @@ export default class BookList extends LightningElement {
                     message: result,
                     variant: 'success',
                 }));
-                location.reload();
+               // location.reload();
             })
             .catch(error => {
                 console.log('Error adding to cart: ' + error.body.fieldErrors.Quantity__c[0].message);
@@ -152,7 +152,7 @@ export default class BookList extends LightningElement {
         addToWishlist({ bookId: bookId, contactId: contactId, accountId: accountId })
             .then(result => {
                 this.showToast('Success', result, 'success');
-                location.reload();
+              //  location.reload();
             })
             .catch(error => {
                 this.showToast('Error', error, 'error');
