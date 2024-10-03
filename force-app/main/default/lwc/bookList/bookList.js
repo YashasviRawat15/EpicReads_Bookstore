@@ -8,25 +8,25 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class BookList extends LightningElement {
     @track books = [];
-    @track paginatedBooks = []; // Paginated subset of books
+    @track paginatedBooks = []; 
     @track currentPage = 1;
     @track selectedBookId;
     @track showBookDetail = false;
     @track detailTopPosition = '0px';
-    booksPerPage = 12; // Number of books to display per page (3 rows of 4 books)
+    booksPerPage = 12; 
     error;
 
-    // Get the total number of pages based on the total books and books per page
+    
     get totalPages() {
         return Math.ceil(this.books.length / this.booksPerPage);
     }
 
-    // Check if current page is the first page
+    
     get isFirstPage() {
         return this.currentPage === 1;
     }
 
-    // Check if current page is the last page
+   
     get isLastPage() {
         return this.currentPage >= this.totalPages;
     }
@@ -34,7 +34,7 @@ export default class BookList extends LightningElement {
     get urlParams() {
         const path = window.location.pathname;
         const parts = path.split('/');
-        return parts[parts.length - 1]; // Last part of URL (genre/language/custom-page)
+        return parts[parts.length - 1];
     }
 
     connectedCallback() {
@@ -165,7 +165,7 @@ export default class BookList extends LightningElement {
         this.template.host.dataset.showBookDetail = false;
     }
 
-    // Pagination methods
+   
     updatePaginatedBooks() {
         const start = (this.currentPage - 1) * this.booksPerPage;
         const end = this.currentPage * this.booksPerPage;

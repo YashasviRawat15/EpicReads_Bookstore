@@ -21,7 +21,7 @@ public with sharing class CaseController {
             // ContactId ='003NS00000FOlMvYAL',
             // AccountId = '001NS00000Zr2YzYAJ',
             Origin = 'Web',
-            SuppliedEmail = caseDetails.get('email') // Assuming 'Web_Email__c' is the API name of the field
+            SuppliedEmail = caseDetails.get('email') 
         );
 
         System.debug('New Case Details --> '+newCase);

@@ -13,7 +13,7 @@ export default class CustomerSupportForm extends LightningElement {
     @track subject = '';
     @track description = '';
 
-    // Fetch Case Reason picklist values
+    
     @wire(getObjectInfo, { objectApiName: CASE_OBJECT })
     caseObjectInfo;
 
@@ -45,10 +45,10 @@ export default class CustomerSupportForm extends LightningElement {
     handleSubmit() {
         console.log("Inside Submit");
 
-        // Validate required fields
+       
         if (!this.selectedReason || !this.email || !this.subject || !this.description) {
             this.showToast('Error', 'All fields are required.', 'error');
-            return; // Exit the method if validation fails
+            return; 
         }
 
         const caseDetails = {

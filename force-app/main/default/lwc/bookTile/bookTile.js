@@ -10,6 +10,7 @@ export default class BookTile extends LightningElement {
     @api bookId;
     @api contactId;
     @api accountId;
+    
 
     quantity = 1;
 
@@ -56,7 +57,6 @@ export default class BookTile extends LightningElement {
             }
         });
 
-        // Dispatch the event to the parent component
         this.dispatchEvent(addToWishlistEvent);
     }
     

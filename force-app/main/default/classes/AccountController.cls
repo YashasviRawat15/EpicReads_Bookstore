@@ -43,7 +43,7 @@ public with sharing class AccountController {
         system.debug('Inside getContactDetails');
         //system.debug('Contact ID --> ' + contactId);
        
-            // Query to get the contact details by ID
+            
             Contact contactDetails = [
                 SELECT Id, FirstName, LastName, Email, Phone, MailingStreet, MailingCity, MailingState, MailingPostalCode, MailingCountry
                 FROM Contact
@@ -51,7 +51,7 @@ public with sharing class AccountController {
                 LIMIT 1
             ];
             system.debug('Conatct Details --> '+ contactDetails);
-            // Return the contact record
+            
             return contactDetails;
        
     }

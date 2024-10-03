@@ -1,12 +1,20 @@
 .book-details {
     padding: 2.5rem; /* Increase padding of the card */
+    max-height: 150vh;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
     
 }
+
+.book-details::-webkit-scrollbar {
+    display: none;
+  }
 
 .back-button {
     position: absolute;
     top: 1rem;
-    left: 1rem; /* Move back button to the left side */
+    left: 1rem;
    
 }
 
@@ -15,12 +23,12 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    margin-right: 2rem; /* Increase space between book image and details */
+    margin-right: 2rem; 
 }
 
 .book-img img {
-    width: 100%;
-    max-width: 300px;
+    width: 22rem;
+    height: 33rem;
     border: 1px solid black;
     margin-top: 1rem;
 }

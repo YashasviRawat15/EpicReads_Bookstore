@@ -1,4 +1,4 @@
-import { LightningElement, wire, api } from 'lwc';
+import { LightningElement, wire, api, track } from 'lwc';
 import PayPal from '@salesforce/resourceUrl/PayPal';
 import Visa from '@salesforce/resourceUrl/Visa';
 import MasterCard from '@salesforce/resourceUrl/MasterCard';
@@ -9,7 +9,7 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 
 export default class PaymentForm extends LightningElement {
-    @api contactId = '003NS00000Dj76r'; // Replace with actual contact ID
+    @api contactId = '003NS00000Dj76r'; 
     @api accountId = '001NS00000WkMKr';
     contactDetails;
     @api error;
@@ -19,7 +19,7 @@ export default class PaymentForm extends LightningElement {
     paymentMethodId = ''; 
     nameOnCard='';
     cvv;
-    expMonth;
+    @track expMonth;
     expYear;
     creditCardNumber;
 
@@ -38,13 +38,13 @@ export default class PaymentForm extends LightningElement {
         { label: 'December', value: 12 }
     ];
 
-    // Static resources for payment logos
+    
     PayPal = PayPal;
     Visa = Visa;
     MasterCard = MasterCard;
     AmericanExpress = AmericanExpress;
 
-    // Load contact details from Apex
+    
     @wire(getContactDetails, { contactId: '$contactId' })
     wiredContact({ error, data }) {
         if (data) {
@@ -71,21 +71,21 @@ export default class PaymentForm extends LightningElement {
 
     connectedCallback() {
         const urlParams = new URLSearchParams(window.location.search);
-        this.totalAmount = urlParams.get('totalAmount') || 0; // Default to 0 if not found
+        this.totalAmount = urlParams.get('totalAmount') || 0;
 
        
     }
 
     
 
-    // Handle billing information changes
+    
     handleInputChange(event) {
         const field = event.target.id || event.target.dataset.id;
         this.contactInfo[field] = event.target.value;
 
-        const fieldName = event.target.name; // Get the name of the field
+        const fieldName = event.target.name; 
     
-        // Dynamically store the value based on the input field name
+       
         if (fieldName === 'nameOnCard') {
             this.nameOnCard = event.target.value;
         } else if (fieldName === 'creditCardNumber') {
@@ -102,20 +102,20 @@ export default class PaymentForm extends LightningElement {
     
     
     handlePayment() {
-        // Validation: Check if any field is empty
+        
         if (!this.nameOnCard || !this.creditCardNumber || !this.expMonth || !this.expYear || !this.cvv) {
             this.showToast('Error', 'Incomplete details. Please fill all fields.', 'error');
             return;
         }
     
-        // Validation: Card number must be exactly 12 digits
+        
         const cardNumberPattern = /^\d{12}$/;
         if (!cardNumberPattern.test(this.creditCardNumber)) {
             this.showToast('Error', 'Credit card number must be exactly 12 digits.', 'error');
             return;
         }
     
-        // Validation: Expiration date must be in the future
+       
         const currentYear = new Date().getFullYear();
         const currentMonth = new Date().getMonth() + 1; 
     
@@ -124,13 +124,13 @@ export default class PaymentForm extends LightningElement {
             return;
         }
     
-        // Additional validation: Checking if totalAmount, contactId, and accountId are valid
+        
         if (!this.contactId || !this.accountId || this.totalAmount <= 0) {
             this.showToast('Error', 'Missing payment details or invalid amount.', 'error');
             return;
         }
     
-        // If all validations pass, proceed with payment
+        
         createOrderWithPayment({
             contactId: this.contactId, 
             accountId: this.accountId, 
@@ -139,7 +139,7 @@ export default class PaymentForm extends LightningElement {
         .then(result => {
             if (result === 'success') {
                 this.showToast('Success', 'Order placed successfully!', 'success');
-                // Redirect to the desired page after successful order
+                
                 window.location.href = '/s';
             } else {
                 this.showToast('Error', 'There was an error placing the order.', 'error');

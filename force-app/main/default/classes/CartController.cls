@@ -11,7 +11,7 @@ public with sharing class CartController {
         system.debug('contactId--> '+contactId );
         system.debug('accountId--> '+accountId );
             system.debug('cart details -->' + bookId +' '+ quantity);
-            // Get the current user's active shopping cart
+            
             Shopping_Cart__c cart = [
                 SELECT Id 
                 FROM Shopping_Cart__c 
@@ -94,7 +94,7 @@ public with sharing class CartController {
         );
         insert newOrder;
 
-        // Create a new empty shopping cart
+        
         Shopping_Cart__c newCart = new Shopping_Cart__c(
             Account__c = accountId,
             Contact__c = contactId,
@@ -108,7 +108,7 @@ public with sharing class CartController {
 
     @AuraEnabled(cacheable=true)
     public static List<Cart_Item__c> getCartItems() {
-        // Retrieve the current user's active shopping cart
+        
         List<Shopping_Cart__c> carts = [SELECT Id FROM Shopping_Cart__c 
                                         WHERE Account__c = :accountId AND Contact__c = :contactId
                                         AND Cart_Status__c = 'Active' LIMIT 1];
@@ -117,14 +117,14 @@ public with sharing class CartController {
             Id cartId = carts[0].Id;
             return [SELECT Id, Book__r.Name, Quantity__c, Book__r.Price__c, Total_Price__c 
                     FROM Cart_Item__c 
-                    WHERE Shopping_Cart__c =:cartId ];//Shopping_Cart__c=:cartId
+                    WHERE Shopping_Cart__c =:cartId ];
         }
         return new List<Cart_Item__c>();
     }
 
     @AuraEnabled(cacheable=true)
     public static Decimal getCartTotalPrice() {
-        // Retrieve the current user's active shopping cart
+        
         List<Shopping_Cart__c> carts = [SELECT Id FROM Shopping_Cart__c 
                                         WHERE Account__c = :accountId AND Contact__c = :contactId
                                         AND Cart_Status__c = 'Active' LIMIT 1];
@@ -149,12 +149,12 @@ public static String removeItemFromCart(Id cartItemId) {
         Cart_Item__c item = [SELECT Id, Quantity__c FROM Cart_Item__c WHERE Id = :cartItemId LIMIT 1];
         
         if (item.Quantity__c > 1) {
-            // Reduce quantity by 1
+            
             item.Quantity__c -= 1;
             update item;
             return 'Quantity reduced by 1.';
         } else {
-            // Delete item from cart
+            
             delete item;
             return 'Item removed from cart.';
         }
@@ -163,6 +163,20 @@ public static String removeItemFromCart(Id cartItemId) {
     }
 }
 
-
+@AuraEnabled
+public static String addItemToCart(Id cartItemId) {
+    try {
+        Cart_Item__c item = [SELECT Id, Quantity__c FROM Cart_Item__c WHERE Id = :cartItemId LIMIT 1];
+        
+       
+            
+            item.Quantity__c += 1;
+            update item;
+            return 'Book Added';
+       
+    } catch (Exception e) {
+        throw new AuraHandledException('Error removing item: ' + e.getMessage());
+    }
+}
 
 }

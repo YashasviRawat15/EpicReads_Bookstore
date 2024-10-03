@@ -1,125 +1,9 @@
-// import { LightningElement, wire, track } from 'lwc';
-// import { NavigationMixin } from 'lightning/navigation'; 
-// import getCartItems from '@salesforce/apex/CartController.getCartItems';
-// import getCartTotalPrice from '@salesforce/apex/CartController.getCartTotalPrice';
-// import checkout from '@salesforce/apex/CartController.checkout';
-// import removeItemFromCart from '@salesforce/apex/CartController.removeItemFromCart';
-// import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-// import { refreshApex } from '@salesforce/apex';
-
-// export default class CartPage extends NavigationMixin (LightningElement) {
-//     @track cartItems = [];
-//     @track totalPrice = 0;
-//    // @track accountId = '001NS00000WkMKr'; 
-//     //@track contactId = '003NS00000Dj76r'; 
-//     @track isOrderModalOpen = false;  // Order confirmation modal
-//     wiredCartItems; 
-//     wiredCartTotal
-
-
-//     //location.reload();
-
-
-//     @wire(getCartItems)
-// wiredCartItems(value) {
-    
-//     this.wiredCartItems = value; // Capture the response for refreshApex
-//     const { data, error } = value;
-//     if (data) {
-        
-//         this.cartItems = data;
-
-//        // this.refreshData();
-//     } else if (error) {
-//         console.error('Error retrieving cart items: ', error);
-//     }
-// }
-
-//     // Wire the total price calculation
-//     @wire(getCartTotalPrice)
-//     wiredCartTotal(value) {
-//         this.wiredCartTotal = value; // Capture the response for refreshApex
-//         const { data, error } = value;
-//         if (data) {
-//             this.totalPrice = data;
-//         } else if (error) {
-//             console.error('Error calculating total price: ', error);
-//         }
-//     }
-
-//     handleCheckout() {
-//         this.isOrderModalOpen = true;
-//     }
-
-//     // Close the Order Confirmation Modal
-//     closeOrderModal() {
-//         this.isOrderModalOpen = false;
-//     }
-
-//     // Confirm the Order
-   
-
-//         confirmOrder() {
-//             this[NavigationMixin.Navigate]({
-//                 type: 'standard__webPage',
-//                 attributes: {
-//                     url: `/payment?totalAmount=${this.totalPrice}` // Redirect to payment page with the total amount
-//                 }
-//             });
-        
-
-       
-        
-//         /*checkout({ 
-//             accountId: '001NS00000WkMKr', //this.accountId
-//             contactId: '003NS00000Dj76r' //this.contactId
-//            // paymentMethod: this.paymentMethod 
-//         })
-//         .then(result => {
-//             this.showToast('Order Success', result, 'success');
-//             this.closeModal();
-//             return refreshApex(this.wiredCartItems);
-//         })
-//         .catch(error => {
-//             console.log('error in order' + error.body);
-//             this.showToast('Error placing order', error, 'error');
-//         }); */
-//     }
-
-
-//     removeItem(event) {
-//         const cartItemId = event.currentTarget.dataset.id; // Get the cart item Id from the clicked button
-//         removeItemFromCart({ cartItemId })
-//             .then(result => {
-//                 this.showToast('Success', result, 'success');
-//                 // Refresh cart data after removal or quantity update
-//                 return Promise.all([
-//                     refreshApex(this.wiredCartItems),
-//                     refreshApex(this.wiredCartTotal) // Refresh total price
-//                 ]);
-//             })
-//             .catch(error => {
-//                 this.showToast('Error', error.body.message, 'error');
-//             });
-//     }
-
-   
-//     showToast(title, message, variant) {
-//         const event = new ShowToastEvent({
-//             title,
-//             message,
-//             variant,
-//         });
-//         this.dispatchEvent(event);
-//     }
-// }
-
-
 import { LightningElement, wire, track } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation'; 
 import getCartItems from '@salesforce/apex/CartController.getCartItems';
 import getCartTotalPrice from '@salesforce/apex/CartController.getCartTotalPrice';
 import removeItemFromCart from '@salesforce/apex/CartController.removeItemFromCart';
+import addItemToCart from '@salesforce/apex/CartController.addItemToCart';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
 
@@ -131,15 +15,15 @@ export default class CartPage extends NavigationMixin(LightningElement) {
     wiredCartItems; 
     wiredCartTotal;
 
-    // Refresh the data when the component is inserted into the DOM
+    
     connectedCallback() {
         this.refreshData();
     }
 
-    // Wire to get cart items
+    
     @wire(getCartItems)
     wiredCartItems(value) {
-        this.wiredCartItems = value; // Capture the response for refreshApex
+        this.wiredCartItems = value; 
         const { data, error } = value;
         if (data) {
             this.cartItems = data;
@@ -148,10 +32,10 @@ export default class CartPage extends NavigationMixin(LightningElement) {
         }
     }
 
-    // Wire to get total price
+    
     @wire(getCartTotalPrice)
     wiredCartTotal(value) {
-        this.wiredCartTotal = value; // Capture the response for refreshApex
+        this.wiredCartTotal = value; 
         const { data, error } = value;
         if (data) {
             this.totalPrice = data;
@@ -160,7 +44,7 @@ export default class CartPage extends NavigationMixin(LightningElement) {
         }
     }
 
-    // Method to refresh data
+    
     refreshData() {
         return Promise.all([
             refreshApex(this.wiredCartItems),
@@ -177,7 +61,7 @@ export default class CartPage extends NavigationMixin(LightningElement) {
     }
 
     confirmOrder() {
-        // Redirect to payment page
+       
         this[NavigationMixin.Navigate]({
             type: 'standard__webPage',
             attributes: {
@@ -187,16 +71,30 @@ export default class CartPage extends NavigationMixin(LightningElement) {
     }
 
     removeItem(event) {
-        const cartItemId = event.currentTarget.dataset.id; // Get the cart item Id from the clicked button
+        const cartItemId = event.currentTarget.dataset.id; 
         removeItemFromCart({ cartItemId })
             .then(result => {
                 this.showToast('Success', result, 'success');
-                // Refresh cart data after removal
+                
                 return this.refreshData();
             })
             .catch(error => {
                 this.showToast('Error', error.body.message, 'error');
             });
+    }
+
+    addItem(event){
+        const cartItemId = event.currentTarget.dataset.id; 
+        addItemToCart({ cartItemId })
+        .then(result => {
+            this.showToast('Success', result, 'success');
+            
+            return this.refreshData();
+        })
+        .catch(error => {
+            this.showToast('Error', error.body.message, 'error');
+        });
+
     }
 
     showToast(title, message, variant) {

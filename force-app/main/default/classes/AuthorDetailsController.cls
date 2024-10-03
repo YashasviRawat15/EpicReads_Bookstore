@@ -35,7 +35,7 @@ public with sharing class AuthorDetailsController {
             ];
             
             if (!docLinks.isEmpty()) {
-                // Query ContentVersion to get the latest image version of the document
+                
                 List<ContentVersion> contentVersions = [
                     SELECT Id, ContentDocumentId, VersionData 
                     FROM ContentVersion 

@@ -1,33 +1,69 @@
 .slds-modal__container {
-    width: 50%;
+    max-width: 95%; /* For small screens */
+    width: 90%;
 }
 
-.slds-modal__content {
-    padding: 1rem;
+.column-heading{
+    display: none;
+}
+
+.slds-table {
+    width: 100%;
+    table-layout: fixed; /* Ensure the table doesn't overflow */
+
+}
+
+.slds-table_fixed-layout th, 
+.slds-table_fixed-layout td {
+    word-wrap: break-word; /* Prevent text overflow */
 }
 
 .cart-summary {
     display: flex;
     justify-content: space-between;
-    margin: 1rem;
-
+    align-items: center;
+    flex-wrap: wrap; /* Wrap the content if the screen is small */
 }
 
-.slds-table {
-    width: 100%;
-}
-
-.close-button{
+.close-button {
     position: absolute;
     right: 1rem;
 }
 
-.cancel-button{
+.cancel-button {
     margin-right: 1rem;
 }
 
-.empty-cart{
+.empty-cart {
     padding: 1rem;
     font-size: larger;
+    text-align: center;
 }
 
+/* Responsive breakpoints */
+@media (max-width: 590px) {
+    thead{
+        display: none;
+    }
+    .column-heading{
+        display: inline;
+    }
+    .slds-modal__container {
+        width: 95%;
+        max-width: 100%;
+    }
+
+    .cart-summary {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .slds-modal__header h2 {
+        font-size: larger;
+    }
+
+    .slds-table th, .slds-table td {
+        display: block;
+        width: 100%;
+    }
+}

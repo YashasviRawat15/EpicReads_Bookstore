@@ -25,7 +25,7 @@ public with sharing class OrderController {
 @AuraEnabled
 public static String createOrderWithPayment( Decimal amount) {
     
-        // Query the active shopping cart for the user
+        
         List<Shopping_Cart__c> carts = [
             SELECT Id, Cart_Total__c 
             FROM Shopping_Cart__c 
@@ -39,7 +39,7 @@ public static String createOrderWithPayment( Decimal amount) {
         Shopping_Cart__c cart = carts[0];
         Contact contact = [SELECT Id, Name, Email FROM Contact WHERE Id = :contactId LIMIT 1];
 
-        // Stripe Payment Processing
+        
         String stripeSecretKey = 'sk_test_51Q0FTzJi20YIDM4QnJRMxT4lBn1nw29AXLOcmpaRX6wrnLUouW2vNSxXkfG9ik6VlX9u3UA5dPbilJquaS41SaeQ00kb9PzRjt'; // Replace with your Stripe secret key
         String endpoint = 'https://api.stripe.com/v1/charges';
         HttpRequest req = new HttpRequest();
@@ -48,19 +48,19 @@ public static String createOrderWithPayment( Decimal amount) {
         req.setHeader('Authorization', 'Bearer ' + stripeSecretKey);
         req.setHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-        // Prepare the request body
+        
         String body = 'amount=' + String.valueOf(amount)  + 
                         '&currency=USD&source=tok_visa';
 
         req.setBody(body);
 
-        // Send the request to Stripe API
+        
         Http http = new Http();
         HttpResponse res = http.send(req);
 
         
 
-        // Parse the response from Stripe
+        
         Map<String, Object> responseMap = (Map<String, Object>) JSON.deserializeUntyped(res.getBody());
         String paymentStatus = (String) responseMap.get('status');
         String returnMessage = '';
@@ -88,8 +88,8 @@ public static String createOrderWithPayment( Decimal amount) {
 
         System.debug('Order Id -- ' + order.id);
         Payment__c newPayment = new Payment__c();
-        newPayment.Account__c = accountId; // Example accountId
-        newPayment.Contact__c = contactId; // Example contactId
+        newPayment.Account__c = accountId; 
+        newPayment.Contact__c = contactId; 
         newPayment.Payment_Method__c = 'Credit Card';
         newPayment.Payment_Status__c = 'Completed';
         newPayment.OrderC__c = order.Id;

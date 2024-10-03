@@ -3,24 +3,24 @@ import getAuthors from '@salesforce/apex/AuthorController.getAuthors';
 
 export default class AuthorList extends LightningElement {
     @track authors = [];
-    @track paginatedAuthors = []; // Paginated subset of authors
+    @track paginatedAuthors = []; 
     @track currentPage = 1;
     @track selectedAuthorId;
     @track isModalOpen = false;
-    authorsPerPage = 15; // Number of authors to display per page (3 rows of 5 authors)
+    authorsPerPage = 10; 
     error;
 
-    // Get the total number of pages based on the total authors and authors per page
+    
     get totalPages() {
         return Math.ceil(this.authors.length / this.authorsPerPage);
     }
 
-    // Check if current page is the first page
+    
     get isFirstPage() {
         return this.currentPage === 1;
     }
 
-    // Check if current page is the last page
+   
     get isLastPage() {
         return this.currentPage >= this.totalPages;
     }
@@ -41,7 +41,7 @@ export default class AuthorList extends LightningElement {
             });
     }
 
-    // Pagination methods
+  
     updatePaginatedAuthors() {
         const start = (this.currentPage - 1) * this.authorsPerPage;
         const end = this.currentPage * this.authorsPerPage;
