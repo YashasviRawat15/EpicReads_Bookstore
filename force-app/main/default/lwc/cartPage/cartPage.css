@@ -1,6 +1,6 @@
 .slds-modal__container {
     max-width: 95%; /* For small screens */
-    width: 90%;
+    width: 40%;
 }
 
 .column-heading{
@@ -32,6 +32,11 @@
 
 .cancel-button {
     margin-right: 1rem;
+}
+
+.total-amount{
+    padding: 2rem 1rem;
+    font-size: 1rem;
 }
 
 .empty-cart {

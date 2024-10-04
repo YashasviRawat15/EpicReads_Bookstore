@@ -22,20 +22,20 @@ export default class PaymentForm extends LightningElement {
     @track expMonth;
     expYear;
     creditCardNumber;
-
+    
     monthOptions = [
-        { label: 'January', value: 1 },
-        { label: 'February', value: 2 },
-        { label: 'March', value: 3 },
-        { label: 'April', value: 4 },
-        { label: 'May', value: 5 },
-        { label: 'June', value: 6 },
-        { label: 'July', value: 7 },
-        { label: 'August', value: 8 },
-        { label: 'September', value: 9 },
-        { label: 'October', value: 10 },
-        { label: 'November', value: 11 },
-        { label: 'December', value: 12 }
+        { label: 'January', value:  'January'},
+        { label: 'February', value: 'February' },
+        { label: 'March', value: 'March' },
+        { label: 'April', value: 'April' },
+        { label: 'May', value: 'May' },
+        { label: 'June', value: 'June' },
+        { label: 'July', value: 'July' },
+        { label: 'August', value: 'August' },
+        { label: 'September', value: 'September' },
+        { label: 'October', value: 'October' },
+        { label: 'November', value:  'November' },
+        { label: 'December', value: 'December' }
     ];
 
     
@@ -76,6 +76,20 @@ export default class PaymentForm extends LightningElement {
        
     }
 
+    expMonthToInt(expMonth){
+        if(expMonth === 'January') return 1;
+        else if (expMonth === 'February') return 2;
+        else if (expMonth === 'March') return 3;
+        else if (expMonth === 'April') return 4;
+        else if (expMonth === 'May') return 5;
+        else if (expMonth === 'June') return 6;
+        else if (expMonth === 'July') return 7;
+        else if (expMonth === 'August') return 8;
+        else if (expMonth === 'September') return 9;
+        else if (expMonth === 'October') return 10;
+        else if (expMonth === 'November') return 11;
+        else if (expMonth === 'December') return 12;
+    }
     
 
     
@@ -99,6 +113,9 @@ export default class PaymentForm extends LightningElement {
         }
     }
 
+
+
+
     
     
     handlePayment() {
@@ -119,7 +136,7 @@ export default class PaymentForm extends LightningElement {
         const currentYear = new Date().getFullYear();
         const currentMonth = new Date().getMonth() + 1; 
     
-        if (this.expYear < currentYear || (this.expYear == currentYear && this.expMonth < currentMonth)) {
+        if (this.expYear < currentYear || (this.expYear == currentYear && this.expMonthToInt(this.expMonth) < currentMonth)) {
             this.showToast('Error', 'Expiration date must be in the future.', 'error');
             return;
         }
