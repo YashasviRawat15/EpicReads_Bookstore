@@ -139,10 +139,14 @@ public with sharing class CartController {
                 totalPrice += item.Total_Price__c;
             }
         }
+        
+        
+    
         return totalPrice;
     } 
 
 
+   
     @AuraEnabled
 public static String removeItemFromCart(Id cartItemId) {
     try {

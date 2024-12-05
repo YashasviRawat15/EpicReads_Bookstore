@@ -13,6 +13,7 @@ export default class OrderTile extends LightningElement {
     @track isModalOpen = false;
     orderImage = staticResourceURL;
     ordersPerPage = 9;
+    cartId;
 
     get totalPages() {
         return Math.ceil(this.orders.length / this.ordersPerPage);
@@ -58,6 +59,7 @@ export default class OrderTile extends LightningElement {
 
     handleViewDetails(event) {
         const shoppingCartId = event.target.dataset.id;
+        this.cartId = shoppingCartId;
         this.fetchCartItems(shoppingCartId);
     }
 
@@ -72,6 +74,21 @@ export default class OrderTile extends LightningElement {
                 this.error = error;
             });
     }
+
+    viewPdf() {
+        console.log('Inside viewPdf function');
+        console.log('cartItems -----> ' + JSON.stringify(this.cartItems));
+        console.log('paginatedOrders -----> ' + JSON.stringify(this.paginatedOrders));
+        
+        const baseUrl = window.location.origin;
+        const shoppingCartId = this.cartId; // Assuming cartItems have the shopping cart ID
+        console.log('Shopping Cart Id ---> ' + this.cartId);
+        const orderId = this.paginatedOrders.find(order => order.Shopping_Cart__c === shoppingCartId).Id;
+        const pdfUrl = `${baseUrl}/apex/OrderPDFPage?shoppingCartId=${shoppingCartId}&orderId=${orderId}`;
+        
+        window.open(pdfUrl, '_blank');
+    }
+    
 
     closeModal() {
         this.isModalOpen = false;

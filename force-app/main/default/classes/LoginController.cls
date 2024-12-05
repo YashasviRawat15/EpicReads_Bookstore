@@ -6,8 +6,10 @@ public class LoginController {
         try {
             
             PageReference pr = Site.login(username, password, '/s');
+            //ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.CONFIRM, 'Username: test.customer@epicreads.com; password: Test@123'));
 
             if (pr != null) {
+                
                 pr.setRedirect(true);
                 System.debug('Logged In');
                 return pr; 

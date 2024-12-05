@@ -22,6 +22,9 @@ export default class PaymentForm extends LightningElement {
     @track expMonth;
     expYear;
     creditCardNumber;
+    @api bookId;
+    @api quantity;
+
     
     monthOptions = [
         { label: 'January', value:  'January'},
@@ -72,6 +75,8 @@ export default class PaymentForm extends LightningElement {
     connectedCallback() {
         const urlParams = new URLSearchParams(window.location.search);
         this.totalAmount = urlParams.get('totalAmount') || 0;
+        this.bookId = urlParams.get('bookId') || null;
+        this.quantity = urlParams.get('quantity') || 0;
 
        
     }
@@ -151,7 +156,9 @@ export default class PaymentForm extends LightningElement {
         createOrderWithPayment({
             contactId: this.contactId, 
             accountId: this.accountId, 
-            amount: this.totalAmount
+            amount: this.totalAmount,
+            bookId: this.bookId,
+            quantity: this.quantity
         })
         .then(result => {
             if (result === 'success') {
@@ -177,3 +184,9 @@ export default class PaymentForm extends LightningElement {
     
     
    }
+
+
+
+
+ //  <lightning-icon icon-name='utility:favorite' alternative-text='favorite' variant='warning' size='large' title='favorite'></lightning-icon>
+ //<lightning-icon icon-name='utility:favorite' alternative-text='favorite' variant='warning' size='x-small' title='favorite'></lightning-icon>

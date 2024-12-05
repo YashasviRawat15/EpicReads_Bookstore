@@ -44,8 +44,8 @@
             align-items: center;
         width:50%;
         margin: auto;
-            padding-top: 12.4rem;
-        padding-bottom: 12.4rem;
+            padding-top: 10rem;
+        padding-bottom: 10rem;
             
         
         }
@@ -121,6 +121,13 @@
             text-decoration: none;
             color: #808080;
         }
+
+        .login-details{
+            width: 38%;
+            margin: auto;
+            color: green;
+            font-weight: bold;
+        }
     </style>
 
     <apex:form >
@@ -136,13 +143,16 @@
                     <apex:image url="{!URLFOR($Resource.CompanyLogo)}" />
                 </div>
 
-                
+                <div class="login-details">
+                    Username: test.customer@epicreads.com<br/>
+                    Password: Test@123
+                </div>
                 
                 <Apex:pagemessages id="message"></Apex:pagemessages>
 
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <apex:inputText value="{!username}" id="email" required="true" />
+                    <apex:inputText value="{!username}" id="email" required="true"  />
                 </div>
 
                 <div class="form-group">
@@ -156,7 +166,7 @@
 
 
                 <div class="links">
-                    <apex:outputLink value="/apex/ForgotPasswordPage">Forgot Password?</apex:outputLink>
+                <!--    <apex:outputLink value="/apex/ForgotPasswordPage">Forgot Password?</apex:outputLink>  -->
                     <apex:outputLink value="/apex/RegisterPage">New to EpicReads? Create Account</apex:outputLink>
                 </div>
             </div>

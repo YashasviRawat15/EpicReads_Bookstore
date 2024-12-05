@@ -1,11 +1,12 @@
 import { LightningElement, api, wire, track } from 'lwc';
+import { NavigationMixin } from 'lightning/navigation'; 
 import getBookDetails from '@salesforce/apex/BookController.getBookDetails';
 import getBookReviews from '@salesforce/apex/BookController.getBookReviews';
 import submitReview from '@salesforce/apex/BookController.submitReview';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { refreshApex } from '@salesforce/apex';
 
-export default class BookDetail extends LightningElement {
+export default class BookDetail extends NavigationMixin(LightningElement) {
     @api recordId; 
     book = {}; 
     @track reviews = []; 
@@ -18,10 +19,10 @@ export default class BookDetail extends LightningElement {
         { label: 'Fair', value: '2' },
         { label: 'Poor', value: '1' }
     ];
-
+    totalPrice;
     error; 
     wiredReviewsResult; 
-
+    quantity = 1;
   
     @wire(getBookDetails, { bookId: '$recordId' })
     wiredBook({ error, data }) {
@@ -52,16 +53,43 @@ export default class BookDetail extends LightningElement {
         }
     }
 
+    increaseQuantity() {
+        this.quantity += 1;
+    }
+
+    decreaseQuantity() {
+        if (this.quantity > 1) {
+            this.quantity -= 1;
+        }
+    }
+
  
     handleBackToList() {
         const backEvent = new CustomEvent('backtolist');
         this.dispatchEvent(backEvent);
     }
 
+    handleBuyNow(){
+
+
+        this.totalPrice = this.quantity * this.book.Price__c;
+        console.log('Total Price  --> ' + this.totalPrice);
+            this[NavigationMixin.Navigate]({
+                type: 'standard__webPage',
+                attributes: {
+                    url: `/payment?totalAmount=${this.totalPrice}&bookId=${this.recordId}&quantity=${this.quantity}`
+                },
+                state: {
+                    navigationOrigin: 'Book Details'
+                }
+            });
+        
+    }
+
 
     handleAddToCart() {
         const addToCartEvent = new CustomEvent('addtocart', {
-            detail: { bookId: this.recordId, quantity: 1 }
+            detail: { bookId: this.recordId, quantity: this.quantity }
         });
         this.dispatchEvent(addToCartEvent);
     }

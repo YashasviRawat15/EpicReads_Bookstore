@@ -75,6 +75,31 @@ h2{
     margin-top: 1rem;
 }
 
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.4rem;
+}
+
+.quantity-label{
+    font-weight: bold;
+    margin-right: 1rem;
+    font-size: 1rem; 
+}
+
+.quantity-buttons {
+
+    display: flex;
+    align-items: center;
+    
+}
+
+.quantity-value {
+    margin: 0 10px;
+    font-weight: bold;
+}
+
 @media screen and (min-width: 768px) {
     .book-content {
         flex-direction: row;
