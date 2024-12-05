@@ -1,22 +1,29 @@
-<<<<<<< HEAD
-# EpicReads_Bookstore
-=======
-# Salesforce DX Project: Next Steps
+# EpicReads Bookstore  
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+EpicReads is a comprehensive Salesforce-powered online bookstore designed to cater to both customers and internal users. This project showcases a seamless integration of community features, administrative functionalities, and advanced development techniques.  
 
-## How Do You Plan to Deploy Your Changes?
+## Features  
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
+### For Customers  
+- **Community Website**: A user-friendly portal for customers to browse, purchase, and review books.  
+- **Stripe Integration**: Secure payment processing using the Stripe API.  
+- **Cart Management**: Add books to the cart, update quantities, and proceed to checkout.  
+- **Order Tracking**: View order history and status updates.  
 
-## Configure Your Salesforce DX Project
+### For Internal Users  
+- **Administrative Dashboard**: Manage books, customers, and orders efficiently.  
+- **Custom Salesforce Objects**: Implementation of Book__c, Cart_Item__c, Order__c, and Shopping_Cart__c for dynamic data management.  
+- **Order Management**: Process, update, and track orders placed by customers.  
+- **Data Visualization**: Generate and view reports for sales and inventory.  
 
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
+### Development Highlights  
+- **Lightning Web Components (LWC)**: Responsive and modern UI components for various features like BookList, BookTile, and Cart.  
+- **Community Cloud Integration**: A tailored community site to enhance customer engagement.  
+- **Payment Gateway**: Seamless integration with Stripe for handling transactions.  
+- **Automation**: Triggers and flows for automating key business processes.  
 
-## Read All About It
+## Installation  
 
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
->>>>>>> 4a4bacc (Initial Commit)
+1. Clone this repository:  
+   ```bash
+   git clone https://github.com/YashasviRawat15/EpicReads_Bookstore.git
